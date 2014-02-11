@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">SMSilence</string>
+    <string name="action_settings">Settings</string>
+    <string name="switch1">SERVICE</string>
+    <string name="serviceRadio">START AT BOOT</string>
+    <string name="notificationRadio">DISPLAY NOTIFICATIONS</string>
+    
+    <!-- Nav Drawer Menu Items -->
+    <string-array name="nav_drawer_items">
+        <item >General</item>
+        <item >Manage</item>
+    </string-array>
+     
+    <!-- Nav Drawer List Item Icons -->
+    <!-- Keep them in order as the titles are in -->
+    <array name="nav_drawer_icons">
+        <item>@drawable/ic_general</item>
+        <item>@drawable/ic_manage</item>
+    </array>
+     
+    <!-- Content Description -->
+    <string name="desc_list_item_icon">Item Icon</string>
+
+</resources>
