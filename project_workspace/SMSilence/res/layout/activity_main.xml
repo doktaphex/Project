@@ -9,86 +9,72 @@
     tools:context=".MainActivity" >
 
     <Switch
-        android:id="@+id/switch1"
+        android:id="@+id/serviceSwitch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/switch1Text"
-        android:layout_alignParentRight="true"
-        android:text="" />
+        android:layout_alignBottom="@+id/serviceText"
+        android:layout_alignParentRight="true" />
 
     <TextView
-        android:id="@+id/switch1Text"
+        android:id="@+id/serviceText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:text="@string/switch1"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <View
         android:layout_width="fill_parent"
         android:layout_height="1dp"
-        android:layout_below="@+id/switch1Text"
-        android:background="@android:color/darker_gray" />
+        android:layout_below="@+id/serviceText"
+        android:background="#002933" />
 
     <TextView
-        android:id="@+id/bootToggleText"
+        android:id="@+id/bootText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/switch1Text"
-        android:layout_below="@+id/switch1Text"
+        android:layout_alignLeft="@+id/serviceText"
+        android:layout_below="@+id/serviceText"
         android:layout_marginTop="23dp"
         android:text="@string/serviceRadio"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <View
         android:layout_width="fill_parent"
         android:layout_height="1dp"
-        android:layout_below="@+id/bootToggleText"
-        android:background="@android:color/darker_gray" />
+        android:layout_below="@+id/bootText"
+        android:background="#002933" />
 
     <TextView
-        android:id="@+id/notificationToggleText"
+        android:id="@+id/notificationText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/bootToggleText"
-        android:layout_below="@+id/bootToggleText"
+        android:layout_alignRight="@+id/bootText"
+        android:layout_below="@+id/bootText"
         android:layout_marginTop="20dp"
         android:text="@string/notificationRadio"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <View
         android:id="@+id/view1"
         android:layout_width="fill_parent"
         android:layout_height="1dp"
-        android:layout_below="@+id/notificationToggleText"
-        android:background="@android:color/darker_gray" />
+        android:layout_below="@+id/notificationText"
+        android:background="#002933" />
 
-    <CheckBox
-        android:id="@+id/bootBox"
+    <Switch
+        android:id="@+id/bootSwitch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/bootToggleText"
-        android:layout_alignBottom="@+id/bootToggleText"
-        android:layout_alignRight="@+id/switch1"
-        android:text="" />
+        android:layout_alignBottom="@+id/bootText"
+        android:layout_alignRight="@+id/serviceSwitch" />
 
-    <CheckBox
-        android:id="@+id/notificationBox"
+    <Switch
+        android:id="@+id/notificationSwitch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/notificationToggleText"
-        android:layout_alignRight="@+id/bootBox"
-        android:text="" />
-
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/view1"
-        android:layout_marginLeft="26dp"
-        android:layout_marginTop="125dp"
-        android:layout_toRightOf="@+id/switch1Text"
-        android:text="ROLL: " />
+        android:layout_alignBottom="@+id/notificationText"
+        android:layout_alignRight="@+id/bootSwitch" />
 
 </RelativeLayout>

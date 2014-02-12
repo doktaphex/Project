@@ -6,5 +6,8 @@
     <string name="switch1">SERVICE</string>
     <string name="serviceRadio">START AT BOOT</string>
     <string name="notificationRadio">DISPLAY NOTIFICATIONS</string>
+    <string name="about">ABOUT</string>
+    <string name="website">WEBSITE</string>
+    <string name="title_activity_about">About SMSilence</string>
 
 </resources>
