@@ -22,20 +22,26 @@ public class MainActivity extends Activity {
 	public static final String Noti = "notiKey";
 	public static final String MyPreferences = "AppPrefs";
 	SharedPreferences settings;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		
+		initControls();
+		settingsLogic();
+	}
+
+	protected void initControls(){
 		serviceSwitch = (Switch) findViewById(R.id.serviceSwitch);
 		bootSwitch = (Switch) findViewById(R.id.bootSwitch);
 		notificationSwitch = (Switch) findViewById(R.id.notificationSwitch);
 		bootSwitch.setEnabled(false);
 		notificationSwitch.setEnabled(false);
-		
+	}
+
+	protected void settingsLogic(){
 		settings = getSharedPreferences(MyPreferences, Context.MODE_PRIVATE);
-		
+
 		if (settings.contains(Service))
 		{
 			serviceSwitch.setChecked(true);
@@ -124,6 +130,8 @@ public class MainActivity extends Activity {
 	@Override
 	protected void onResume() {
 		super.onResume();
+		initControls();
+		settingsLogic();
 	}
 
 	@Override
@@ -137,20 +145,20 @@ public class MainActivity extends Activity {
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
 	}
-	
+
 	public boolean onOptionsItemSelected(MenuItem item) {
-	     
+
 		switch (item.getItemId()) {
-	    case R.id.about:
-	    startActivity(new Intent(this, AboutActivity.class));
-	    return true;
-	    case R.id.website:
-	    	Toast.makeText(getApplicationContext(), 
+		case R.id.about:
+			startActivity(new Intent(this, AboutActivity.class));
+			return true;
+		case R.id.website:
+			Toast.makeText(getApplicationContext(), 
 					"WWW.KRUZTECH.COM", Toast.LENGTH_LONG).show();
-	    return true;
-	    default:
-	    return super.onOptionsItemSelected(item);
-	}
-	 
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
+		}
+
 	}
 }

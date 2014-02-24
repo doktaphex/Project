@@ -8,12 +8,14 @@ import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.telephony.TelephonyManager;
+import android.util.Log;
 import android.view.Menu;
 
 public class IncomingNotifier extends Activity {
-	public class MyReceiver extends BroadcastReceiver {
-		 NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+	private BroadcastReceiver MyReceiver = new BroadcastReceiver(){
+		 
 		@SuppressLint("NewApi") @Override
 		public void onReceive(Context context, Intent intent) {
 			// TODO: This method is called when the BroadcastReceiver is receiving
@@ -23,6 +25,8 @@ public class IncomingNotifier extends Activity {
 				String phoneNumber =
 				intent.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER);
 				
+				NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+				
 				Notification noti = new Notification.Builder(context)
 		         .setContentTitle("Incoming Call From: " + phoneNumber.toString())
 		         .build();
@@ -31,15 +35,24 @@ public class IncomingNotifier extends Activity {
 				nm.notify(id , noti);
 				}
 				}
-		}
+		};
+		
+		private IntentFilter intentFilter = new IntentFilter(
+	            Intent.EXTRA_PHONE_NUMBER);
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_incoming_notifier);
-        MyReceiver = new MyReceiver();
     }
 
-
+    protected void onResume()
+    {
+        Log.i("onResume", "onResume");
+//        this.registerReceiver(mBroadcastReceiver, intentFilter);
+        registerReceiver(MyReceiver, intentFilter);
+        super.onResume();
+    }
+    
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
