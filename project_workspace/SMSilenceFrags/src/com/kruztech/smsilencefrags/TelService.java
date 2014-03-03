@@ -27,7 +27,6 @@ public class TelService extends Service {
 				default : break;
 			}
 			
-			Toast.makeText(getApplicationContext(), callStateStr, Toast.LENGTH_SHORT);
 		}
 	};
 	
