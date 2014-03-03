@@ -31,27 +31,37 @@ public final class R {
         public static final int ic_launcher=0x7f020002;
     }
     public static final class id {
-        public static final int about=0x7f09000d;
-        public static final int aboutText=0x7f090003;
-        public static final int bootSwitch=0x7f09000b;
-        public static final int bootText=0x7f090007;
-        public static final int bootTextMini=0x7f090008;
+        public static final int LocBtn=0x7f090005;
+        public static final int RespBtn=0x7f090009;
+        public static final int TimeDateBtn=0x7f090007;
+        public static final int about=0x7f090016;
+        public static final int aboutText=0x7f090004;
+        public static final int aboutTextTitle=0x7f090003;
+        public static final int bootSwitch=0x7f090014;
+        public static final int bootText=0x7f090010;
+        public static final int bootTextMini=0x7f090011;
         public static final int drawer_layout=0x7f090000;
         public static final int fragment_container=0x7f090001;
         public static final int left_drawer=0x7f090002;
-        public static final int notiTextMini=0x7f09000a;
-        public static final int notificationSwitch=0x7f09000c;
-        public static final int notificationText=0x7f090009;
-        public static final int serviceSwitch=0x7f090004;
-        public static final int serviceText=0x7f090005;
-        public static final int serviceTextMini=0x7f090006;
-        public static final int website=0x7f09000e;
+        public static final int locTxt=0x7f090006;
+        public static final int notiTextMini=0x7f090013;
+        public static final int notificationSwitch=0x7f090015;
+        public static final int notificationText=0x7f090012;
+        public static final int progressBar=0x7f09000c;
+        public static final int respTxt=0x7f09000a;
+        public static final int serviceSwitch=0x7f09000d;
+        public static final int serviceText=0x7f09000e;
+        public static final int serviceTextMini=0x7f09000f;
+        public static final int timeTxt=0x7f090008;
+        public static final int view1=0x7f09000b;
+        public static final int website=0x7f090017;
     }
     public static final class layout {
         public static final int activity_main=0x7f030000;
         public static final int drawer_list_item=0x7f030001;
         public static final int fragment_about=0x7f030002;
-        public static final int fragment_settings=0x7f030003;
+        public static final int fragment_management=0x7f030003;
+        public static final int fragment_settings=0x7f030004;
     }
     public static final class menu {
         public static final int main=0x7f080000;
@@ -60,16 +70,30 @@ public final class R {
         /**  Options menu strings 
          */
         public static final int about=0x7f050009;
+        public static final int aboutApp=0x7f050014;
+        /**  About App 
+         */
+        public static final int aboutAppTitle=0x7f050013;
         public static final int action_settings=0x7f050002;
         public static final int app_name=0x7f050000;
-        public static final int drawer_close=0x7f05000c;
-        public static final int drawer_open=0x7f05000b;
+        public static final int drawer_close=0x7f050012;
+        /**  Nav drawer strings 
+         */
+        public static final int drawer_open=0x7f050011;
+        public static final int locTxt=0x7f05000e;
+        /**  Management Fragment 
+         */
+        public static final int locations=0x7f05000b;
         public static final int notiSmall=0x7f050008;
         public static final int notificationRadio=0x7f050004;
+        public static final int respTxt=0x7f050010;
+        public static final int response=0x7f05000d;
         public static final int serviceRadio=0x7f050003;
         public static final int serviceSmall=0x7f050007;
         public static final int switch1=0x7f050001;
         public static final int switchSmall=0x7f050006;
+        public static final int timeDate=0x7f05000c;
+        public static final int timeTxt=0x7f05000f;
         public static final int title_activity_about=0x7f050005;
         public static final int website=0x7f05000a;
     }
