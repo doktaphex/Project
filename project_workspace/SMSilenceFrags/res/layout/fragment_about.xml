@@ -9,14 +9,20 @@
     tools:context=".AboutActivity" >
 
     <TextView
-        android:id="@+id/aboutText"
-        android:layout_width="wrap_content"
+        android:id="@+id/aboutTextTitle"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:layout_marginLeft="48dp"
-        android:layout_marginTop="46dp"
-        android:text="ABOUT APP PAGE"
+        android:text="@string/aboutAppTitle"
         android:textAppearance="?android:attr/textAppearanceLarge" />
+    
+    <TextView
+        android:id="@+id/aboutText"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/aboutTextTitle"
+        android:text="@string/aboutApp"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
 
 </RelativeLayout>
