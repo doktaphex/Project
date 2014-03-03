@@ -30,13 +30,13 @@ public class MainActivity extends Activity {
 	private CharSequence mDrawerTitle;
 	private CharSequence mTitle;
 	private String[] mDrawerItems;
-	private BroadcastReceiver mReceiver;
 	private static final String TAG = "Kruztech";
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
+		disableTelReceiver(mDrawerLayout);
 
 		// Started adding left drawer menu.
 		mTitle = mDrawerTitle = getTitle();
