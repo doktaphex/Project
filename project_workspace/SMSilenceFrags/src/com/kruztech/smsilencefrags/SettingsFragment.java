@@ -2,9 +2,16 @@ package com.kruztech.smsilencefrags;
 
 import android.os.Bundle;
 import android.app.Fragment;
+import android.app.NotificationManager;
+import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.content.pm.PackageManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,17 +29,26 @@ public class SettingsFragment extends Fragment {
 	public static final String Noti = "notiKey";
 	public static final String MyPreferences = "AppPrefs";
 	SharedPreferences settings;
+	final static String TAG = "Kruztech";
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
 		return inflater.inflate(R.layout.fragment_settings, container, false);
 	}
-	
+
 	@Override
 	public void onStart() {
 		super.onStart();
 		initControls();
 		settingsLogic();
+	}
+
+	public void startNewService(Intent intent){
+		startNewService(new Intent());
+	}
+
+	public void stopNewService(Intent intent){
+		startNewService(new Intent());
 	}
 
 	protected void initControls(){
@@ -74,6 +90,9 @@ public class SettingsFragment extends Fragment {
 
 					Toast.makeText(getActivity().getApplicationContext(), 
 							"Service Started", Toast.LENGTH_SHORT).show();
+
+					getActivity().startService(new Intent(getActivity(),AccelService.class));
+
 				}else{
 					bootSwitch.setEnabled(false);
 					notificationSwitch.setEnabled(false);
@@ -83,6 +102,8 @@ public class SettingsFragment extends Fragment {
 
 					Toast.makeText(getActivity().getApplicationContext(), 
 							"Service Stopped", Toast.LENGTH_SHORT).show();
+
+					getActivity().stopService(new Intent(getActivity(),AccelService.class));
 				}
 
 			}
@@ -98,12 +119,25 @@ public class SettingsFragment extends Fragment {
 					edit.apply();
 					Toast.makeText(getActivity().getApplicationContext(), 
 							"Service will start at device bootup", Toast.LENGTH_SHORT).show();
+
+//					PackageManager pm  = getActivity().getApplicationContext().getPackageManager();
+//					ComponentName componentName = new ComponentName(getActivity(), BootReceiver.class);
+//					pm.setComponentEnabledSetting(componentName,PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
+//							PackageManager.DONT_KILL_APP);
+					Log.d(TAG, "Boot switch on");
+
 				}else{
 					Editor edit = settings.edit();
 					edit.remove("bootKey");
 					edit.apply();
 					Toast.makeText(getActivity().getApplicationContext(), 
 							"Service will NOT start at device bootup", Toast.LENGTH_SHORT).show();
+
+//					PackageManager pm  = getActivity().getApplicationContext().getPackageManager();
+//					ComponentName componentName = new ComponentName(getActivity(), BootReceiver.class);
+//					pm.setComponentEnabledSetting(componentName,PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
+//							PackageManager.DONT_KILL_APP);
+					Log.d(TAG, "Boot switch off");
 				}
 
 			}
@@ -119,6 +153,10 @@ public class SettingsFragment extends Fragment {
 					edit.apply();
 					Toast.makeText(getActivity().getApplicationContext(), 
 							"Service will display notifications", Toast.LENGTH_SHORT).show();
+
+					//NotificationManager nm = new NotificationManager();
+
+
 				}else{
 					Editor edit = settings.edit();
 					edit.remove("notiKey");
@@ -130,39 +168,4 @@ public class SettingsFragment extends Fragment {
 			}
 		});
 	}
-
-//	@Override
-//	protected void onResume() {
-//		super.onResume();
-//		initControls();
-//		settingsLogic();
-//	}
-//
-//	@Override
-//	protected void onPause() {
-//		super.onPause();
-//	}
-//
-//	@Override
-//	public boolean onCreateOptionsMenu(Menu menu) {
-//		// Inflate the menu; this adds items to the action bar if it is present.
-//		getMenuInflater().inflate(R.menu.main, menu);
-//		return true;
-//	}
-//
-//	public boolean onOptionsItemSelected(MenuItem item) {
-//
-//		switch (item.getItemId()) {
-//		case R.id.about:
-//			startActivity(new Intent(this, AboutActivity.class));
-//			return true;
-//		case R.id.website:
-//			Toast.makeText(getApplicationContext(), 
-//					"WWW.KRUZTECH.COM", Toast.LENGTH_LONG).show();
-//			return true;
-//		default:
-//			return super.onOptionsItemSelected(item);
-//		}
-//
-//	}
 }
