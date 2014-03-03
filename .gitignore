@@ -5,8 +5,8 @@
 *.pydevproject
 .project
 .metadata
-SMSilenceFrags\bin\**
-SMSilenceFrags\gin\**
+bin/
+gen/
 tmp/
 *.tmp
 *.bak
