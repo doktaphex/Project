@@ -11,6 +11,7 @@ public class BootReceiver extends BroadcastReceiver {
 	@Override
 	public void onReceive(Context arg0, Intent intent){
 			Intent i = new Intent(arg0, AccelService.class);
+			//i.addFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES);
 			arg0.startService(i);
 			Log.d(TAG,"Boot Completed");
 	}

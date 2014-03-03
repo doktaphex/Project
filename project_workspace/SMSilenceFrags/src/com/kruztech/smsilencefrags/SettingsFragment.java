@@ -2,6 +2,7 @@ package com.kruztech.smsilencefrags;
 
 import android.os.Bundle;
 import android.app.Fragment;
+import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
@@ -29,7 +30,7 @@ public class SettingsFragment extends Fragment {
 	public static final String MyPreferences = "AppPrefs";
 	SharedPreferences settings;
 	final static String TAG = "Kruztech";
-	
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
 		return inflater.inflate(R.layout.fragment_settings, container, false);
@@ -38,7 +39,6 @@ public class SettingsFragment extends Fragment {
 	@Override
 	public void onStart() {
 		super.onStart();
-		((MainActivity) getActivity()).disableTelReceiver(serviceSwitch);
 		initControls();
 		settingsLogic();
 	}
@@ -67,7 +67,6 @@ public class SettingsFragment extends Fragment {
 			serviceSwitch.setChecked(true);
 			bootSwitch.setEnabled(true);
 			notificationSwitch.setEnabled(true);
-			((MainActivity) getActivity()).enableTelReceiver(serviceSwitch);
 		}
 		if (settings.contains(Boot))
 		{
@@ -88,11 +87,11 @@ public class SettingsFragment extends Fragment {
 					Editor edit = settings.edit();
 					edit.putBoolean("serviceKey", true);
 					edit.apply();
-					
+
 					Toast.makeText(getActivity().getApplicationContext(), 
 							"Service Started", Toast.LENGTH_SHORT).show();
-					
-					((MainActivity) getActivity()).enableTelReceiver(serviceSwitch);
+
+					getActivity().startService(new Intent(getActivity(),AccelService.class));
 
 				}else{
 					bootSwitch.setEnabled(false);
@@ -104,7 +103,7 @@ public class SettingsFragment extends Fragment {
 					Toast.makeText(getActivity().getApplicationContext(), 
 							"Service Stopped", Toast.LENGTH_SHORT).show();
 
-					((MainActivity) getActivity()).disableTelReceiver(serviceSwitch);
+					getActivity().stopService(new Intent(getActivity(),AccelService.class));
 				}
 
 			}
@@ -120,7 +119,11 @@ public class SettingsFragment extends Fragment {
 					edit.apply();
 					Toast.makeText(getActivity().getApplicationContext(), 
 							"Service will start at device bootup", Toast.LENGTH_SHORT).show();
-					
+
+//					PackageManager pm  = getActivity().getApplicationContext().getPackageManager();
+//					ComponentName componentName = new ComponentName(getActivity(), BootReceiver.class);
+//					pm.setComponentEnabledSetting(componentName,PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
+//							PackageManager.DONT_KILL_APP);
 					Log.d(TAG, "Boot switch on");
 
 				}else{
@@ -130,6 +133,10 @@ public class SettingsFragment extends Fragment {
 					Toast.makeText(getActivity().getApplicationContext(), 
 							"Service will NOT start at device bootup", Toast.LENGTH_SHORT).show();
 
+//					PackageManager pm  = getActivity().getApplicationContext().getPackageManager();
+//					ComponentName componentName = new ComponentName(getActivity(), BootReceiver.class);
+//					pm.setComponentEnabledSetting(componentName,PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
+//							PackageManager.DONT_KILL_APP);
 					Log.d(TAG, "Boot switch off");
 				}
 

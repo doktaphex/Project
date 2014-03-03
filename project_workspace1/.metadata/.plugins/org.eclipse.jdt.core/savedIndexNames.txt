@@ -1,3 +1,0 @@
-INDEX VERSION 1.126+/Users/jozef/Project/project_workspace1/.metadata/.plugins/org.eclipse.jdt.core
-2350916148.index
-2715240963.index
