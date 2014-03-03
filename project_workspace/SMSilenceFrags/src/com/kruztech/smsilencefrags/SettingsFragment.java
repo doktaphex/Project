@@ -34,7 +34,6 @@ public class SettingsFragment extends Fragment {
 	@Override
 	public void onStart() {
 		super.onStart();
-		((MainActivity) getActivity()).disableTelReceiver(serviceSwitch);
 		initControls();
 		settingsLogic();
 	}
