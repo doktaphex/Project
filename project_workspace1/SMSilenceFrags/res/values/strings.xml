@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">SMSilenceFrags</string>
+    <string name="switch1">Service</string>
+    <string name="action_settings">Settings</string>
+    <string name="serviceRadio">Start at boot</string>
+    <string name="notificationRadio">Notifications</string>
+    <string name="title_activity_about">About SMSilence</string>
+    <string name="switchSmall">Start the service</string>
+    <string name="serviceSmall">Start automatically at boot</string>
+    <string name="notiSmall">Display notifications</string>
+
+    <!-- Options menu strings -->
+    
+    <string name="about">About</string>
+    <string name="website">Website</string>
+    <!-- Nav-drawer menu items -->
+    <string-array name="nav_drawer_items">
+        <item>General</item>
+        <item>Manage</item>
+    </string-array>
+
+    <!-- Management Fragment -->
+    
+    <string name="locations">Locations</string>
+    <string name="timeDate">Time/Day</string>
+    <string name="response">Responses</string>
+    
+    <string name="locTxt">Create and manage stored locations</string>
+    <string name="timeTxt">Create and manage times and days of the week</string>
+    <string name="respTxt">Create and manage SMS responses</string>
+    
+    <!-- Nav drawer strings -->
+    
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
+
+    <!-- About App -->
+    
+    <string name="aboutAppTitle">SMSilence\n</string>
+    <string name="aboutApp">Copyright \u00A9 Kruztech 2014\nCopyright \u00A9 Jozef Kruszynski 2010-2014\nVersion 0.01</string>
+</resources>
