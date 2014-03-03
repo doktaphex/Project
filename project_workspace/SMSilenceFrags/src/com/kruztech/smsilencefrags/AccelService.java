@@ -10,6 +10,7 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.os.CountDownTimer;
 import android.os.IBinder;
 import android.util.Log;
 import android.widget.Toast;
@@ -31,6 +32,8 @@ public class AccelService extends Service {
 			if(currentAcceleration < -8){
 				Toast.makeText(getApplicationContext(), "You flipped your phone", Toast.LENGTH_SHORT)
 				.show();
+				Log.d(TAG, "PHONE FLIPPED!");
+				onDestroy();
 			}
 		}
 	};
@@ -44,7 +47,11 @@ public class AccelService extends Service {
 	}
 
 	public void onCreate() {
-
+	}
+	
+	@Override
+	public void onStart(Intent accelIntent, int startId){
+		Log.d(TAG, "Service started");
 		sensorManager = (SensorManager)getSystemService(Context.SENSOR_SERVICE);
 
 		Sensor accelerometer =
@@ -57,11 +64,6 @@ public class AccelService extends Service {
 			public void run() {
 			}
 		}, 0, 100);
-	} 
-
-	@Override
-	public void onStart(Intent accelIntent, int startId){
-		Log.d(TAG, "Service started");
 	}
 
 	@Override

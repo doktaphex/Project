@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <section name="Workbench">
+<<<<<<< HEAD
 	<section name="ChooseWorkspaceDialogSettings">
 		<item value="225" key="DIALOG_Y_ORIGIN"/>
 		<item value="345" key="DIALOG_X_ORIGIN"/>
@@ -25,5 +26,10 @@
 		<item value="354" key="DIALOG_HEIGHT"/>
 		<item value="371" key="DIALOG_X_ORIGIN"/>
 		<item value="false" key="TOGGLE_SELECTED"/>
+=======
+	<section name="ExternalProjectImportWizard">
+		<item value="false" key="WizardProjectsImportPage.STORE_ARCHIVE_SELECTED"/>
+		<item value="false" key="WizardProjectsImportPage.STORE_COPY_PROJECT_ID"/>
+>>>>>>> FETCH_HEAD
 	</section>
 </section>

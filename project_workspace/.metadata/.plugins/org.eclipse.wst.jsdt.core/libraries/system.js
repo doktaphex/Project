@@ -915,6 +915,7 @@ Date.prototype.setUTCFullYear = function(year, month,date){};
 Date.prototype.toUTCString = function(){return "";};
 
 /**
+<<<<<<< HEAD
   * Property NaN
   * @since   Standard ECMA-262 3rd. Edition 
   * @since   Level 2 Document Object Model Core Definition.  
@@ -928,17 +929,50 @@ var NaN=0;
 var Infinity=0;
 /**
   * function eval(s)
+=======
+  * Object Global
+  * @super Object
+  * @constructor
+  * @memberOf Global
+  * @since Standard ECMA-262 3rd. Edition
+  * @since Level 2 Document Object Model Core Definition.
+ */
+function Global(){};
+Global.prototype=new Object();
+/**
+  * Property NaN
+  * @memberOf Global
+  * @since   Standard ECMA-262 3rd. Edition 
+  * @since   Level 2 Document Object Model Core Definition.  
+ */
+Global.prototype.NaN=0;
+/**
+  * Property Infinity
+  * @memberOf Global
+  * @since   Standard ECMA-262 3rd. Edition 
+  * @since   Level 2 Document Object Model Core Definition.  
+ */
+Global.prototype.Infinity=0;
+/**
+  * function eval(s)
+  * @memberOf Global
+>>>>>>> FETCH_HEAD
   * @param {String} s
   * @type Object
   * @returns {Object}
   * @since   Standard ECMA-262 3rd. Edition 
   * @since   Level 2 Document Object Model Core Definition.     
  */
+<<<<<<< HEAD
 function eval(s){return new Object();};
+=======
+Global.prototype.eval=function(s){return new Object();};
+>>>>>>> FETCH_HEAD
 
 //@GINO: Bug 197987 (Temp Fix)
 /**
   * Property debugger
+<<<<<<< HEAD
   * @description Debugger keyword
  */
 var debugger=null;
@@ -951,6 +985,23 @@ var undefined=null;
 
 /**
   * function parseInt(s,radix)
+=======
+  * @memberOf Global
+  * @description Debugger keyword
+ */
+Global.prototype.debugger=null;
+
+/**
+ * Property undefined
+ * @memberOf Global
+ * @description undefined
+*/
+Global.prototype.undefined=null;
+
+/**
+  * function parseInt(s,radix)
+  * @memberOf Global
+>>>>>>> FETCH_HEAD
   * @param {String} s
   * @param {Number} radix
   * @type Number
@@ -958,88 +1009,155 @@ var undefined=null;
   * @since   Standard ECMA-262 3rd. Edition 
   * @since   Level 2 Document Object Model Core Definition.    
  */
+<<<<<<< HEAD
 function parseInt(s,radix){return 0;};
 /**
   * function parseFloat(s)
+=======
+Global.prototype.parseInt=function(s,radix){return 0;};
+/**
+  * function parseFloat(s)
+  * @memberOf Global
+>>>>>>> FETCH_HEAD
   * @param {String} s
   * @type Number
   * @returns {Number}
   * @since   Standard ECMA-262 3rd. Edition 
   * @since   Level 2 Document Object Model Core Definition.   
  */
+<<<<<<< HEAD
 function parseFloat(s){return 0;};
 /**
  * function escape(s)
+=======
+Global.prototype.parseFloat=function(s){return 0;};
+/**
+ * function escape(s)
+ * @memberOf Global
+>>>>>>> FETCH_HEAD
  * @param {String} s
  * @type String
  * @returns {String}
  * @since   Standard ECMA-262 3rd. Edition 
  * @since   Level 2 Document Object Model Core Definition.   
 */
+<<<<<<< HEAD
 function escape(s){return "";};
 /**
  * function unescape(s)
+=======
+Global.prototype.escape=function(s){return "";};
+/**
+ * function unescape(s)
+ * @memberOf Global
+>>>>>>> FETCH_HEAD
  * @param {String} s
  * @type String
  * @returns {String}
  * @since   Standard ECMA-262 3rd. Edition 
  * @since   Level 2 Document Object Model Core Definition.   
 */
+<<<<<<< HEAD
 function unescape(s){return "";};
 /**
   * function isNaN(number)
+=======
+Global.prototype.unescape=function(s){return "";};
+/**
+  * function isNaN(number)
+  * @memberOf Global
+>>>>>>> FETCH_HEAD
   * @param {String} number
   * @type Boolean
   * @returns {Boolean}
   * @since   Standard ECMA-262 3rd. Edition 
   * @since   Level 2 Document Object Model Core Definition.  
  */
+<<<<<<< HEAD
 function isNaN(number){return false;};
 /**
   * function isFinite(number)
+=======
+Global.prototype.isNaN=function(number){return false;};
+/**
+  * function isFinite(number)
+  * @memberOf Global
+>>>>>>> FETCH_HEAD
   * @param {String} number
   * @type Boolean
   * @returns {Boolean}
   * @since   Standard ECMA-262 3rd. Edition 
   * @since   Level 2 Document Object Model Core Definition.    
  */
+<<<<<<< HEAD
 function isFinite(number){return false;};
 /**
  * function decodeURI(encodedURI)
+=======
+Global.prototype.isFinite=function(number){return false;};
+/**
+ * function decodeURI(encodedURI)
+ * @memberOf Global
+>>>>>>> FETCH_HEAD
  * @param {String} encodedURI
  * @type String
  * @returns {String}
  * @since   Standard ECMA-262 3rd. Edition 
  * @since   Level 2 Document Object Model Core Definition.  
 */
+<<<<<<< HEAD
 function decodeURI(encodedURI){return "";};
 /**
+=======
+Global.prototype.decodeURI=function(encodedURI){return "";};
+/**
+ * @memberOf Global
+>>>>>>> FETCH_HEAD
  * @param {String} uriComponent
  * @type String
  * @returns {String}
  * @since   Standard ECMA-262 3rd. Edition 
  * @since   Level 2 Document Object Model Core Definition.  
 */
+<<<<<<< HEAD
 function decodeURIComponent(uriComponent){return "";};
 /**
  * function encodeURIComponent(uriComponent)
+=======
+Global.prototype.decodeURIComponent=function(uriComponent){return "";};
+/**
+ * function encodeURIComponent(uriComponent)
+ * @memberOf Global
+>>>>>>> FETCH_HEAD
  * @param {String} uriComponent
  * @type String
  * @returns {String}
  * @since   Standard ECMA-262 3rd. Edition 
  * @since   Level 2 Document Object Model Core Definition.    
 */
+<<<<<<< HEAD
 function encodeURIComponent(uriComponent){return "";};
 
 /**
  * function encodeURIComponent(URI)
+=======
+Global.prototype.encodeURIComponent=function(uriComponent){return "";};
+
+/**
+ * function encodeURIComponent(URI)
+ * @memberOf Global
+>>>>>>> FETCH_HEAD
  * @param {String} URI
  * @type String
  * @returns {String}
  * @since   Standard ECMA-262 3rd. Edition 
  * @since   Level 2 Document Object Model Core Definition.    
 */
+<<<<<<< HEAD
 function encodeURI(URI){return "";};
+=======
+Global.prototype.encodeURI=function(URI){return "";};
+>>>>>>> FETCH_HEAD
 
 /**
   * Object Math(\s)
