@@ -10,8 +10,8 @@ public class TelReceiver extends BroadcastReceiver {
 
 	@Override
 	public void onReceive(Context arg0, Intent intent) {
-		Intent i = new Intent(arg0, TelService.class);
+		Intent i = new Intent(arg0, AccelService.class);
 		arg0.startService(i);
-		Log.d(TAG,"TelReceiver: Tel service started");
+		Log.d(TAG,"TelReceiver: Accelerometer service started");
 	}
 }
