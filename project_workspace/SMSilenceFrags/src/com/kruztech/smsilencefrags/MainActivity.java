@@ -1,15 +1,18 @@
 package com.kruztech.smsilencefrags;
 
-import java.util.Locale;
-
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.Fragment;
-import android.app.FragmentManager;
+import android.app.IntentService;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.res.Configuration;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -18,7 +21,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -31,12 +33,12 @@ public class MainActivity extends Activity {
 	private CharSequence mDrawerTitle;
 	private CharSequence mTitle;
 	private String[] mDrawerItems;
-	private int position;
+	private BroadcastReceiver mReceiver;
+	private static final String TAG = "Kruztech";
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-
 
 
 		// Started adding left drawer menu.
@@ -89,7 +91,6 @@ public class MainActivity extends Activity {
 			// Create a new Fragment to be placed in the activity layout
 			SettingsFragment firstFragment = new SettingsFragment();
 
-
 			// In case this activity was started with special instructions from an
 			// Intent, pass the Intent's extras to the fragment as arguments
 			firstFragment.setArguments(getIntent().getExtras());
@@ -98,6 +99,7 @@ public class MainActivity extends Activity {
 			getFragmentManager().beginTransaction()
 			.add(R.id.fragment_container, firstFragment).commit();
 		}
+		mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
 	}
 
 
@@ -137,13 +139,14 @@ public class MainActivity extends Activity {
 		// Handle action buttons
 		switch(item.getItemId()) {
 		case R.id.about:
-			// create intent to perform web search for this planet
-			AboutFragment secondFragment = new AboutFragment();
+			AboutFragment aFragment = new AboutFragment();
 
 			getFragmentManager().beginTransaction()
-			.replace(R.id.fragment_container, secondFragment)
+			.replace(R.id.fragment_container, aFragment)
 			.addToBackStack(null)
 			.commit();
+			Log.d(TAG,"Opened about fragment");
+			setTitle("About");
 			return true;
 		case R.id.website:
 			Toast.makeText(getApplicationContext(), 
@@ -164,14 +167,31 @@ public class MainActivity extends Activity {
 
 	public void selectItem(int position) {
 		// update the main content by replacing fragments
-		Fragment fragment = new MainFragment();
-		Bundle args = new Bundle();
-		args.putInt(MainFragment.ARG_FRAGMENT_NUMBER, position);
-		fragment.setArguments(args);
+		Log.d(TAG,"switched fragments using nav-drawer");
+		if(position == 0){
+			SettingsFragment fragment1 = new SettingsFragment();
 
-		Log.d("kruztech","fuck");
-		FragmentManager fragmentManager = getFragmentManager();
-		fragmentManager.beginTransaction().replace(R.id.fragment_container, fragment).commit();
+			// In case this activity was started with special instructions from an
+			// Intent, pass the Intent's extras to the fragment as arguments
+			fragment1.setArguments(getIntent().getExtras());
+
+			// Add the fragment to the 'fragment_container' FrameLayout
+			getFragmentManager().beginTransaction()
+			.replace(R.id.fragment_container, fragment1)
+			.commit();
+		}
+		if(position == 1){
+			ManagementFragment fragment2 = new ManagementFragment();
+
+			// In case this activity was started with special instructions from an
+			// Intent, pass the Intent's extras to the fragment as arguments
+			fragment2.setArguments(getIntent().getExtras());
+
+			// Add the fragment to the 'fragment_container' FrameLayout
+			getFragmentManager().beginTransaction()
+			.replace(R.id.fragment_container, fragment2)
+			.commit();
+		}
 
 		// update selected item and title, then close the drawer
 		mDrawerList.setItemChecked(position, true);
@@ -206,7 +226,7 @@ public class MainActivity extends Activity {
 
 		public MainFragment() {
 			// Empty constructor required for fragment subclasses
-			
+
 		}
 
 		@Override
