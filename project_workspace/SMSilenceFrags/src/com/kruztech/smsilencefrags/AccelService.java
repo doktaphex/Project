@@ -3,6 +3,9 @@ package com.kruztech.smsilencefrags;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -12,6 +15,7 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.IBinder;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 public class AccelService extends Service {
@@ -22,13 +26,13 @@ public class AccelService extends Service {
 	private SensorManager sensorManager;
 	private int currentAcceleration = 0;
 
-
 	private final SensorEventListener sensorEventListener = new SensorEventListener() {
 		public void onAccuracyChanged(Sensor sensor, int accuracy) { }
 		public void onSensorChanged(SensorEvent event) {
 			int z = (int) event.values[2];
 			currentAcceleration = (int) z;
 			if(currentAcceleration < -8){
+				notificationSender(null);
 				onDestroy();
 				Toast.makeText(getApplicationContext(), "You flipped your phone", Toast.LENGTH_SHORT)
 				.show();
@@ -36,7 +40,19 @@ public class AccelService extends Service {
 		}
 	};
 
-
+	public void notificationSender(View v) {
+		Intent intent = new Intent();
+		PendingIntent pIntent = PendingIntent.getActivity(this, 0, intent, 0);
+		Notification noti = new Notification.Builder(this)
+		.setTicker("Someone called")
+		.setContentTitle("Nothing")
+		.setContentText("Nothing else")
+		.setContentIntent(pIntent)
+		.build();
+		noti.flags=Notification.FLAG_AUTO_CANCEL;
+		NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+		notificationManager.notify(0, noti); 
+	}
 
 	@Override
 	public IBinder onBind(Intent intent) {
