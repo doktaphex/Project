@@ -3,15 +3,15 @@ package com.kruztech.smsilencefrags;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 
 public class TelReceiver extends BroadcastReceiver {
-	public TelReceiver() {
-	}
+	private static final String TAG = "Kruztech";
 
 	@Override
-	public void onReceive(Context context, Intent intent) {
-		// TODO: This method is called when the BroadcastReceiver is receiving
-		// an Intent broadcast.
-		throw new UnsupportedOperationException("Not yet implemented");
+	public void onReceive(Context arg0, Intent intent) {
+		Intent i = new Intent(arg0, TelService.class);
+		arg0.startService(i);
+		Log.d(TAG,"TelReceiver: Tel service started");
 	}
 }

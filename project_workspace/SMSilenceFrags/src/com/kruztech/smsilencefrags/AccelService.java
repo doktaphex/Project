@@ -29,6 +29,7 @@ public class AccelService extends Service {
 			int z = (int) event.values[2];
 			currentAcceleration = (int) z;
 			if(currentAcceleration < -8){
+				onDestroy();
 				Toast.makeText(getApplicationContext(), "You flipped your phone", Toast.LENGTH_SHORT)
 				.show();
 			}
@@ -44,7 +45,10 @@ public class AccelService extends Service {
 	}
 
 	public void onCreate() {
+	} 
 
+	@Override
+	public void onStart(Intent accelIntent, int startId){
 		sensorManager = (SensorManager)getSystemService(Context.SENSOR_SERVICE);
 
 		Sensor accelerometer =
@@ -57,10 +61,7 @@ public class AccelService extends Service {
 			public void run() {
 			}
 		}, 0, 100);
-	} 
-
-	@Override
-	public void onStart(Intent accelIntent, int startId){
+		
 		Log.d(TAG, "Service started");
 	}
 

@@ -2,15 +2,10 @@ package com.kruztech.smsilencefrags;
 
 import android.os.Bundle;
 import android.app.Fragment;
-import android.app.NotificationManager;
-import android.content.BroadcastReceiver;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-import android.content.pm.PackageManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -39,6 +34,7 @@ public class SettingsFragment extends Fragment {
 	@Override
 	public void onStart() {
 		super.onStart();
+		((MainActivity) getActivity()).disableTelReceiver(serviceSwitch);
 		initControls();
 		settingsLogic();
 	}
@@ -65,6 +61,7 @@ public class SettingsFragment extends Fragment {
 		if (settings.contains(Service))
 		{
 			serviceSwitch.setChecked(true);
+			((MainActivity) getActivity()).enableTelReceiver(serviceSwitch);
 			bootSwitch.setEnabled(true);
 			notificationSwitch.setEnabled(true);
 		}
@@ -91,7 +88,7 @@ public class SettingsFragment extends Fragment {
 					Toast.makeText(getActivity().getApplicationContext(), 
 							"Service Started", Toast.LENGTH_SHORT).show();
 
-					getActivity().startService(new Intent(getActivity(),AccelService.class));
+					((MainActivity) getActivity()).enableTelReceiver(serviceSwitch);
 
 				}else{
 					bootSwitch.setEnabled(false);
@@ -103,8 +100,7 @@ public class SettingsFragment extends Fragment {
 					Toast.makeText(getActivity().getApplicationContext(), 
 							"Service Stopped", Toast.LENGTH_SHORT).show();
 
-					getActivity().stopService(new Intent(getActivity(),AccelService.class));
-				}
+					((MainActivity) getActivity()).disableTelReceiver(serviceSwitch);				}
 
 			}
 		});

@@ -5,9 +5,11 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.IntentService;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
@@ -199,6 +201,33 @@ public class MainActivity extends Activity {
 		mDrawerLayout.closeDrawer(mDrawerList);
 	}
 
+	 /**
+     * This method enables the Broadcast receiver registered in the AndroidManifest file.
+     * @param view
+     */
+   public void enableTelReceiver(View view){
+      ComponentName receiver = new ComponentName(this, TelReceiver.class);
+      PackageManager pm = this.getPackageManager();
+ 
+      pm.setComponentEnabledSetting(receiver,
+              PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
+              PackageManager.DONT_KILL_APP);
+      Toast.makeText(this, "Enabled broadcast receiver", Toast.LENGTH_SHORT).show();
+   }
+   /**
+    * This method disables the Broadcast receiver registered in the AndroidManifest file.
+    * @param view
+    */
+   public void disableTelReceiver(View view){
+      ComponentName receiver = new ComponentName(this, TelReceiver.class);
+      PackageManager pm = this.getPackageManager();
+ 
+      pm.setComponentEnabledSetting(receiver,
+              PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
+              PackageManager.DONT_KILL_APP);
+      Toast.makeText(this, "Disabled broadcst receiver", Toast.LENGTH_SHORT).show();
+   }
+	
 	/**
 	 * When using the ActionBarDrawerToggle, you must call it during
 	 * onPostCreate() and onConfigurationChanged()...
