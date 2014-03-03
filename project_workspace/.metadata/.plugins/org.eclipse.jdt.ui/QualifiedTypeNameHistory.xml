@@ -5,4 +5,9 @@
 <fullyQualifiedTypeName name="android.hardware.Sensor"/>
 <fullyQualifiedTypeName name="android.hardware.SensorEvent"/>
 <fullyQualifiedTypeName name="android.content.Context"/>
+<fullyQualifiedTypeName name="android.util.Log"/>
+<fullyQualifiedTypeName name="android.content.pm.PackageManager"/>
+<fullyQualifiedTypeName name="android.content.ComponentName"/>
+<fullyQualifiedTypeName name="android.content.BroadcastReceiver"/>
+<fullyQualifiedTypeName name="android.content.IntentFilter"/>
 </qualifiedTypeNameHistroy>
