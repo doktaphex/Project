@@ -18,7 +18,7 @@ import android.hardware.SensorManager;
 import android.net.Uri;
 import android.os.IBinder;
 import android.provider.ContactsContract.PhoneLookup;
-import android.telephony.TelephonyManager;
+import android.telephony.SmsManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -26,7 +26,8 @@ import android.widget.Toast;
 public class AccelService extends Service {
 	private static final String TAG = "Kruztech";
 	static String contactName = null;
-	static String data = "number";
+	static String data = null;
+	static String smsMessage = null;
 	private SensorManager sensorManager;
 	private int currentAcceleration = 0;
 	private NotificationManager notificationManager;
@@ -38,6 +39,13 @@ public class AccelService extends Service {
 			currentAcceleration = (int) z;
 			if(currentAcceleration < -8){
 				notificationSender(null);
+				
+				try {
+					sendSMS(smsMessage, "YO BRO!");
+				}catch(Exception e){
+					e.printStackTrace();
+					Log.d(TAG, "sms not sent");
+				}
 				onDestroy();
 				Toast.makeText(getApplicationContext(), "You flipped your phone", Toast.LENGTH_SHORT)
 				.show();
@@ -47,7 +55,6 @@ public class AccelService extends Service {
 
 	public void notificationSender(View v) {
 		Intent intent = new Intent();
-
 
 		PendingIntent pIntent = PendingIntent.getActivity(this, 0, intent, 0);
 		Notification noti = new Notification.Builder(this)
@@ -62,6 +69,11 @@ public class AccelService extends Service {
 		notificationManager.notify(0, noti);
 	}
 
+	public void sendSMS(String address, String message) throws Exception{
+		SmsManager smsMgr = SmsManager.getDefault();
+		smsMgr.sendTextMessage(address, null, message, null, null);
+	}
+	
 	public static String getContactName(Context context, String data) {
 		ContentResolver cr = context.getContentResolver();
 		Uri uri = Uri.withAppendedPath(PhoneLookup.CONTENT_FILTER_URI, Uri.encode(data));
@@ -93,6 +105,7 @@ public class AccelService extends Service {
 	public void onStart(Intent accelIntent, int startId){		
 		
 		getContactName(getApplicationContext(), accelIntent.getStringExtra("com.kruztech.smsilencefrags.INCOMING_NUMBER"));
+		smsMessage = accelIntent.getStringExtra("com.kruztech.smsilencefrags.INCOMING_NUMBER");
 		if(contactName != null){
 			data = contactName;
 		}else{
