@@ -19,6 +19,7 @@ import android.net.Uri;
 import android.os.IBinder;
 import android.provider.ContactsContract.PhoneLookup;
 import android.telephony.SmsManager;
+//import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -39,13 +40,15 @@ public class AccelService extends Service {
 			currentAcceleration = (int) z;
 			if(currentAcceleration < -8){
 				notificationSender(null);
-				
+
 				try {
-					sendSMS(smsMessage, "YO BRO!");
+					sendSMS(smsMessage, "This is an auto message sent from Jozef Kruszynski.");
 				}catch(Exception e){
 					e.printStackTrace();
 					Log.d(TAG, "sms not sent");
 				}
+				//				TelephonyManager telMan = (TelephonyManager) getApplicationContext().getSystemService(Context.TELEPHONY_SERVICE);
+				//				telMan.endCall();
 				onDestroy();
 				Toast.makeText(getApplicationContext(), "You flipped your phone", Toast.LENGTH_SHORT)
 				.show();
@@ -59,8 +62,8 @@ public class AccelService extends Service {
 		PendingIntent pIntent = PendingIntent.getActivity(this, 0, intent, 0);
 		Notification noti = new Notification.Builder(this)
 		.setTicker("Someone called")
-		.setContentTitle("Someone")
-		.setContentText("Incoming Number: " + data)
+		.setContentTitle("Incoming Number: " + data)
+		.setContentText("SMS sent to the above recipient")
 		.setContentIntent(pIntent)
 		.setSmallIcon(R.drawable.ic_launcher)
 		.build();
@@ -73,7 +76,7 @@ public class AccelService extends Service {
 		SmsManager smsMgr = SmsManager.getDefault();
 		smsMgr.sendTextMessage(address, null, message, null, null);
 	}
-	
+
 	public static String getContactName(Context context, String data) {
 		ContentResolver cr = context.getContentResolver();
 		Uri uri = Uri.withAppendedPath(PhoneLookup.CONTENT_FILTER_URI, Uri.encode(data));
@@ -81,7 +84,7 @@ public class AccelService extends Service {
 		if (cursor == null) {
 			return null;
 		}
-		
+
 		if(cursor.moveToFirst()) {
 			contactName = cursor.getString(cursor.getColumnIndex(PhoneLookup.DISPLAY_NAME));
 		}
@@ -91,7 +94,7 @@ public class AccelService extends Service {
 		}
 		return contactName;
 	}
-	
+
 	@Override
 	public IBinder onBind(Intent intent) {
 		// TODO: Return the communication channel to the service.
@@ -100,35 +103,35 @@ public class AccelService extends Service {
 
 	public void onCreate() {
 	} 
-
+	
 	@Override
 	public void onStart(Intent accelIntent, int startId){		
 		
-		getContactName(getApplicationContext(), accelIntent.getStringExtra("com.kruztech.smsilencefrags.INCOMING_NUMBER"));
-		smsMessage = accelIntent.getStringExtra("com.kruztech.smsilencefrags.INCOMING_NUMBER");
-		if(contactName != null){
-			data = contactName;
-		}else{
-		data = accelIntent.getStringExtra("com.kruztech.smsilencefrags.INCOMING_NUMBER");
-		}
-		sensorManager = (SensorManager)getSystemService(Context.SENSOR_SERVICE);
-
-		Sensor accelerometer =
-				sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-		sensorManager.registerListener(sensorEventListener,
-				accelerometer,
-				SensorManager.SENSOR_DELAY_FASTEST);
-		Timer updateTimer = new Timer();
-		updateTimer.scheduleAtFixedRate(new TimerTask() {
-			public void run() {
+			getContactName(getApplicationContext(), accelIntent.getStringExtra("com.kruztech.smsilencefrags.INCOMING_NUMBER"));
+			smsMessage = accelIntent.getStringExtra("com.kruztech.smsilencefrags.INCOMING_NUMBER");
+			if(contactName != null){
+				data = contactName;
+			}else{
+				data = accelIntent.getStringExtra("com.kruztech.smsilencefrags.INCOMING_NUMBER");
 			}
-		}, 0, 100);
+			
+			sensorManager = (SensorManager)getSystemService(Context.SENSOR_SERVICE);
 
-		Log.d(TAG, "Service started");
+			Sensor accelerometer =
+					sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+			sensorManager.registerListener(sensorEventListener,
+					accelerometer,
+					SensorManager.SENSOR_DELAY_FASTEST);
+			Timer updateTimer = new Timer();
+			updateTimer.scheduleAtFixedRate(new TimerTask() {
+				public void run() {
+				}
+			}, 0, 100);
 
-		notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-	}
+			Log.d(TAG, "Service started");
 
+			notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+		}
 	@Override
 	public void onDestroy(){
 		sensorManager.unregisterListener(sensorEventListener);
