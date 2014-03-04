@@ -1,7 +1,6 @@
 package com.kruztech.smsilencefrags;
 
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
@@ -23,10 +22,9 @@ public class SettingsFragment extends Fragment {
 	public static final String Service = "serviceKey";
 	public static final String Boot = "bootKey";
 	public static final String Noti = "notiKey";
-	public static final String MyPreferences = "com.kruztech.smsilencefrags";
+	public static final String MyPreferences = "AppPrefs";
 	SharedPreferences settings;
 	final static String TAG = "Kruztech";
-	protected static final long mStartTime = 0;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
@@ -39,7 +37,7 @@ public class SettingsFragment extends Fragment {
 		initControls();
 		settingsLogic();
 	}
-	
+
 	public void startNewService(Intent intent){
 		startNewService(new Intent());
 	}
@@ -52,11 +50,10 @@ public class SettingsFragment extends Fragment {
 		serviceSwitch = (Switch) getView().findViewById(R.id.serviceSwitch);
 		bootSwitch = (Switch) getView().findViewById(R.id.bootSwitch);
 		notificationSwitch = (Switch) getView().findViewById(R.id.notificationSwitch);
-		serviceSwitch.setChecked(false);
 		bootSwitch.setEnabled(false);
 		notificationSwitch.setEnabled(false);
 	}
-	
+
 	protected void settingsLogic(){
 		settings = getActivity().getSharedPreferences(MyPreferences, Context.MODE_PRIVATE);
 
@@ -67,27 +64,11 @@ public class SettingsFragment extends Fragment {
 			bootSwitch.setEnabled(true);
 			notificationSwitch.setEnabled(true);
 		}
-		
-		if(settings.contains(Boot))
+		if (settings.contains(Boot))
 		{
-			serviceSwitch.setChecked(true);
-			((MainActivity) getActivity()).enableTelReceiver(serviceSwitch);
-			bootSwitch.setEnabled(true);
-			notificationSwitch.setEnabled(true);
 			bootSwitch.setChecked(true);
 		}
-		
-		if(!settings.contains(Boot)){
-			Editor edit = settings.edit();
-			edit.remove("serviceKey");
-			serviceSwitch.setChecked(false);
-			((MainActivity) getActivity()).disableTelReceiver(serviceSwitch);
-			bootSwitch.setEnabled(false);
-			notificationSwitch.setEnabled(false);
-			
-		}
-		
-		if(settings.contains(Noti))
+		if (settings.contains(Noti))
 		{
 			notificationSwitch.setChecked(true);
 		}
@@ -134,10 +115,10 @@ public class SettingsFragment extends Fragment {
 					Toast.makeText(getActivity().getApplicationContext(), 
 							"Service will start at device bootup", Toast.LENGTH_SHORT).show();
 
-					//					PackageManager pm  = getActivity().getApplicationContext().getPackageManager();
-					//					ComponentName componentName = new ComponentName(getActivity(), BootReceiver.class);
-					//					pm.setComponentEnabledSetting(componentName,PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
-					//							PackageManager.DONT_KILL_APP);
+//					PackageManager pm  = getActivity().getApplicationContext().getPackageManager();
+//					ComponentName componentName = new ComponentName(getActivity(), BootReceiver.class);
+//					pm.setComponentEnabledSetting(componentName,PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
+//							PackageManager.DONT_KILL_APP);
 					Log.d(TAG, "Boot switch on");
 
 				}else{
@@ -147,10 +128,10 @@ public class SettingsFragment extends Fragment {
 					Toast.makeText(getActivity().getApplicationContext(), 
 							"Service will NOT start at device bootup", Toast.LENGTH_SHORT).show();
 
-					//					PackageManager pm  = getActivity().getApplicationContext().getPackageManager();
-					//					ComponentName componentName = new ComponentName(getActivity(), BootReceiver.class);
-					//					pm.setComponentEnabledSetting(componentName,PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
-					//							PackageManager.DONT_KILL_APP);
+//					PackageManager pm  = getActivity().getApplicationContext().getPackageManager();
+//					ComponentName componentName = new ComponentName(getActivity(), BootReceiver.class);
+//					pm.setComponentEnabledSetting(componentName,PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
+//							PackageManager.DONT_KILL_APP);
 					Log.d(TAG, "Boot switch off");
 				}
 
@@ -181,7 +162,5 @@ public class SettingsFragment extends Fragment {
 
 			}
 		});
-		
-		
 	}
 }
