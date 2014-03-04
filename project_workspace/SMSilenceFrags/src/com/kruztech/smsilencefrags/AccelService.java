@@ -7,13 +7,17 @@ import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.net.Uri;
 import android.os.IBinder;
+import android.provider.ContactsContract.PhoneLookup;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.View;
@@ -21,13 +25,10 @@ import android.widget.Toast;
 
 public class AccelService extends Service {
 	private static final String TAG = "Kruztech";
-	String data = "number";
-	public AccelService() {
-	}
-
+	static String contactName = null;
+	static String data = "number";
 	private SensorManager sensorManager;
 	private int currentAcceleration = 0;
-	String incomingNumber = "incomingNumber";
 	private NotificationManager notificationManager;
 
 	private final SensorEventListener sensorEventListener = new SensorEventListener() {
@@ -46,8 +47,8 @@ public class AccelService extends Service {
 
 	public void notificationSender(View v) {
 		Intent intent = new Intent();
-		
-		
+
+
 		PendingIntent pIntent = PendingIntent.getActivity(this, 0, intent, 0);
 		Notification noti = new Notification.Builder(this)
 		.setTicker("Someone called")
@@ -57,10 +58,28 @@ public class AccelService extends Service {
 		.setSmallIcon(R.drawable.ic_launcher)
 		.build();
 		noti.flags=Notification.FLAG_AUTO_CANCEL;
-		
-		notificationManager.notify(0, noti); 
+
+		notificationManager.notify(0, noti);
 	}
 
+	public static String getContactName(Context context, String data) {
+		ContentResolver cr = context.getContentResolver();
+		Uri uri = Uri.withAppendedPath(PhoneLookup.CONTENT_FILTER_URI, Uri.encode(data));
+		Cursor cursor = cr.query(uri, new String[]{PhoneLookup.DISPLAY_NAME}, null, null, null);
+		if (cursor == null) {
+			return null;
+		}
+		
+		if(cursor.moveToFirst()) {
+			contactName = cursor.getString(cursor.getColumnIndex(PhoneLookup.DISPLAY_NAME));
+		}
+
+		if(cursor != null && !cursor.isClosed()) {
+			cursor.close();
+		}
+		return contactName;
+	}
+	
 	@Override
 	public IBinder onBind(Intent intent) {
 		// TODO: Return the communication channel to the service.
@@ -71,9 +90,14 @@ public class AccelService extends Service {
 	} 
 
 	@Override
-	public void onStart(Intent accelIntent, int startId){
-		data = accelIntent.getStringExtra("com.kruztech.smsilencefrags.INCOMING_NUMBER");
+	public void onStart(Intent accelIntent, int startId){		
 		
+		getContactName(getApplicationContext(), accelIntent.getStringExtra("com.kruztech.smsilencefrags.INCOMING_NUMBER"));
+		if(contactName != null){
+			data = contactName;
+		}else{
+		data = accelIntent.getStringExtra("com.kruztech.smsilencefrags.INCOMING_NUMBER");
+		}
 		sensorManager = (SensorManager)getSystemService(Context.SENSOR_SERVICE);
 
 		Sensor accelerometer =
@@ -86,9 +110,9 @@ public class AccelService extends Service {
 			public void run() {
 			}
 		}, 0, 100);
-		
+
 		Log.d(TAG, "Service started");
-		
+
 		notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 	}
 
