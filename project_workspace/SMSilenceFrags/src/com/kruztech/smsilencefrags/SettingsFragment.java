@@ -115,10 +115,6 @@ public class SettingsFragment extends Fragment {
 					Toast.makeText(getActivity().getApplicationContext(), 
 							"Service will start at device bootup", Toast.LENGTH_SHORT).show();
 
-//					PackageManager pm  = getActivity().getApplicationContext().getPackageManager();
-//					ComponentName componentName = new ComponentName(getActivity(), BootReceiver.class);
-//					pm.setComponentEnabledSetting(componentName,PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
-//							PackageManager.DONT_KILL_APP);
 					Log.d(TAG, "Boot switch on");
 
 				}else{
@@ -128,10 +124,6 @@ public class SettingsFragment extends Fragment {
 					Toast.makeText(getActivity().getApplicationContext(), 
 							"Service will NOT start at device bootup", Toast.LENGTH_SHORT).show();
 
-//					PackageManager pm  = getActivity().getApplicationContext().getPackageManager();
-//					ComponentName componentName = new ComponentName(getActivity(), BootReceiver.class);
-//					pm.setComponentEnabledSetting(componentName,PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
-//							PackageManager.DONT_KILL_APP);
 					Log.d(TAG, "Boot switch off");
 				}
 
