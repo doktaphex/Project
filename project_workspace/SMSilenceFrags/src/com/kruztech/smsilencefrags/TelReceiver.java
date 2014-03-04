@@ -1,8 +1,12 @@
 package com.kruztech.smsilencefrags;
 
 import android.content.BroadcastReceiver;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
+import android.provider.ContactsContract.PhoneLookup;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.widget.Toast;
@@ -16,12 +20,13 @@ public class TelReceiver extends BroadcastReceiver {
 		Intent accelIntent = new Intent(arg0, AccelService.class);
 		arg0.startService(accelIntent);
 		Log.d(TAG,"TelReceiver: Accelerometer and Telephony services started");
-		
+
 		String incomingNumber = intent.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER);
-		Intent i = new Intent(arg0, AccelService.class);
-		i.putExtra("com.kruztech.smsilencefrags.INCOMING_NUMBER", incomingNumber);
-		arg0.startService(i);
-		Log.d(TAG,"TelReceiver: data passed?");
+		
+			Intent i = new Intent(arg0, AccelService.class);
+			i.putExtra("com.kruztech.smsilencefrags.INCOMING_NUMBER", incomingNumber);
+			arg0.startService(i);
+			Log.d(TAG,"TelReceiver: data passed?");
 	}
 }
 
