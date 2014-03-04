@@ -14,17 +14,21 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.IBinder;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
 public class AccelService extends Service {
 	private static final String TAG = "Kruztech";
+	String data = "number";
 	public AccelService() {
 	}
 
 	private SensorManager sensorManager;
 	private int currentAcceleration = 0;
+	String incomingNumber = "incomingNumber";
+	private NotificationManager notificationManager;
 
 	private final SensorEventListener sensorEventListener = new SensorEventListener() {
 		public void onAccuracyChanged(Sensor sensor, int accuracy) { }
@@ -42,15 +46,18 @@ public class AccelService extends Service {
 
 	public void notificationSender(View v) {
 		Intent intent = new Intent();
+		
+		
 		PendingIntent pIntent = PendingIntent.getActivity(this, 0, intent, 0);
 		Notification noti = new Notification.Builder(this)
 		.setTicker("Someone called")
-		.setContentTitle("Nothing")
-		.setContentText("Nothing else")
+		.setContentTitle("Someone")
+		.setContentText("Incoming Number: " + data)
 		.setContentIntent(pIntent)
+		.setSmallIcon(R.drawable.ic_launcher)
 		.build();
 		noti.flags=Notification.FLAG_AUTO_CANCEL;
-		NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+		
 		notificationManager.notify(0, noti); 
 	}
 
@@ -65,6 +72,8 @@ public class AccelService extends Service {
 
 	@Override
 	public void onStart(Intent accelIntent, int startId){
+		data = accelIntent.getStringExtra("com.kruztech.smsilencefrags.INCOMING_NUMBER");
+		
 		sensorManager = (SensorManager)getSystemService(Context.SENSOR_SERVICE);
 
 		Sensor accelerometer =
@@ -79,6 +88,8 @@ public class AccelService extends Service {
 		}, 0, 100);
 		
 		Log.d(TAG, "Service started");
+		
+		notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 	}
 
 	@Override
