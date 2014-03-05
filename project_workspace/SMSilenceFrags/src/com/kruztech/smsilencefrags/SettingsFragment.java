@@ -67,6 +67,10 @@ public class SettingsFragment extends Fragment {
 		if (settings.contains(Boot))
 		{
 			bootSwitch.setChecked(true);
+			serviceSwitch.setChecked(true);
+			((MainActivity) getActivity()).enableTelReceiver(serviceSwitch);
+			bootSwitch.setEnabled(true);
+			notificationSwitch.setEnabled(true);
 		}
 		if (settings.contains(Noti))
 		{
@@ -140,10 +144,6 @@ public class SettingsFragment extends Fragment {
 					edit.apply();
 					Toast.makeText(getActivity().getApplicationContext(), 
 							"Service will display notifications", Toast.LENGTH_SHORT).show();
-
-					//NotificationManager nm = new NotificationManager();
-
-
 				}else{
 					Editor edit = settings.edit();
 					edit.remove("notiKey");
