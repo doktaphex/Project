@@ -40,17 +40,17 @@
             android:exported="true" >
         </service>
 
-        <receiver
-            android:name="com.kruztech.smsilencefrags.BootReceiver"
-            android:enabled="true"
-            android:exported="true"
-            android:label="Kruztech.BootReceiver" >
-            <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETE" />
+<!--         <receiver -->
+<!--             android:name="com.kruztech.smsilencefrags.BootReceiver" -->
+<!--             android:enabled="true" -->
+<!--             android:exported="true" -->
+<!--             android:label="Kruztech.BootReceiver" > -->
+<!--             <intent-filter> -->
+<!--                 <action android:name="android.intent.action.BOOT_COMPLETE" /> -->
 
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </receiver>
+<!--                 <category android:name="android.intent.category.DEFAULT" /> -->
+<!--             </intent-filter> -->
+<!--         </receiver> -->
         <receiver android:name="TelReceiver" >
             <intent-filter>
                 <action android:name="android.intent.action.PHONE_STATE" >
