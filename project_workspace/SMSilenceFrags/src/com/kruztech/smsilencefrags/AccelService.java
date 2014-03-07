@@ -29,16 +29,26 @@ public class AccelService extends Service {
 	static String contactName = null;
 	static String data = null;
 	static String smsMessage = null;
-	private SensorManager sensorManager;
+	private static SensorManager sensorManager;
 	private int currentAcceleration = 0;
+	private int proximityNear = 5;
 	private NotificationManager notificationManager;
+	protected static final Sensor accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+	protected static final Sensor proximity = sensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
 
 	private final SensorEventListener sensorEventListener = new SensorEventListener() {
 		public void onAccuracyChanged(Sensor sensor, int accuracy) { }
 		public void onSensorChanged(SensorEvent event) {
-			int z = (int) event.values[2];
-			currentAcceleration = (int) z;
-			if(currentAcceleration < -8){
+			Sensor source = event.sensor;
+			if(source.equals(accelerometer)){
+				int z = (int) event.values[2];
+				currentAcceleration = (int) z;
+			}
+			if(source.equals(proximity)){
+				int p = (int) event.values[0];
+				proximityNear = (int) p;
+			}
+			if(currentAcceleration < -8 && proximityNear == 0){
 				notificationSender(null);
 
 				try {
@@ -103,35 +113,43 @@ public class AccelService extends Service {
 
 	public void onCreate() {
 	} 
-	
+
 	@Override
 	public void onStart(Intent accelIntent, int startId){		
-		
-			getContactName(getApplicationContext(), accelIntent.getStringExtra("com.kruztech.smsilencefrags.INCOMING_NUMBER"));
-			smsMessage = accelIntent.getStringExtra("com.kruztech.smsilencefrags.INCOMING_NUMBER");
-			if(contactName != null){
-				data = contactName;
-			}else{
-				data = accelIntent.getStringExtra("com.kruztech.smsilencefrags.INCOMING_NUMBER");
-			}
-			
-			sensorManager = (SensorManager)getSystemService(Context.SENSOR_SERVICE);
 
-			Sensor accelerometer =
-					sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-			sensorManager.registerListener(sensorEventListener,
-					accelerometer,
-					SensorManager.SENSOR_DELAY_FASTEST);
-			Timer updateTimer = new Timer();
-			updateTimer.scheduleAtFixedRate(new TimerTask() {
-				public void run() {
-				}
-			}, 0, 100);
-
-			Log.d(TAG, "Service started");
-
-			notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+		getContactName(getApplicationContext(), accelIntent.getStringExtra("com.kruztech.smsilencefrags.INCOMING_NUMBER"));
+		smsMessage = accelIntent.getStringExtra("com.kruztech.smsilencefrags.INCOMING_NUMBER");
+		if(contactName != null){
+			data = contactName;
+		}else{
+			data = accelIntent.getStringExtra("com.kruztech.smsilencefrags.INCOMING_NUMBER");
 		}
+
+		sensorManager = (SensorManager)getSystemService(Context.SENSOR_SERVICE);
+
+//		Sensor accelerometer =
+//				sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+		sensorManager.registerListener(sensorEventListener,
+				accelerometer,
+				SensorManager.SENSOR_DELAY_FASTEST);
+		Timer updateTimer = new Timer();
+		updateTimer.scheduleAtFixedRate(new TimerTask() {
+			public void run() {
+			}
+		}, 0, 100);
+
+		sensorManager = (SensorManager)getSystemService(Context.SENSOR_SERVICE);
+
+//		Sensor proximity =
+//				sensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
+		sensorManager.registerListener(sensorEventListener,
+				proximity,
+				SensorManager.SENSOR_DELAY_NORMAL);
+
+		Log.d(TAG, "Service started");
+
+		notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+	}
 	@Override
 	public void onDestroy(){
 		sensorManager.unregisterListener(sensorEventListener);
