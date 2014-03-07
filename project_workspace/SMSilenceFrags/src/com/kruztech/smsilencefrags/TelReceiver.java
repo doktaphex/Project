@@ -1,15 +1,10 @@
 package com.kruztech.smsilencefrags;
 
 import android.content.BroadcastReceiver;
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
-import android.net.Uri;
-import android.provider.ContactsContract.PhoneLookup;
 import android.telephony.TelephonyManager;
 import android.util.Log;
-import android.widget.Toast;
 
 public class TelReceiver extends BroadcastReceiver {
 	private static final String TAG = "Kruztech";
@@ -17,16 +12,41 @@ public class TelReceiver extends BroadcastReceiver {
 
 	@Override
 	public void onReceive(Context arg0, Intent intent) {
-		Intent accelIntent = new Intent(arg0, AccelService.class);
-		arg0.startService(accelIntent);
-		Log.d(TAG,"TelReceiver: Accelerometer and Telephony services started");
+		try
+        {
+            String state = intent.getStringExtra(TelephonyManager.EXTRA_STATE);
 
-		String incomingNumber = intent.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER);
+            if(state.equals(TelephonyManager.EXTRA_STATE_RINGING))
+            {
+            	Intent accelIntent = new Intent(arg0, AccelService.class);
+        		arg0.startService(accelIntent);
+        		Log.d(TAG,"TelReceiver: Accelerometer and Telephony services started");
+
+        		incomingNumber = intent.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER);
+
+        		Intent i = new Intent(arg0, AccelService.class);
+        		i.putExtra("com.kruztech.smsilencefrags.INCOMING_NUMBER", incomingNumber);
+        		arg0.startService(i);
+        		Log.d(TAG,"TelReceiver: data passed?");
+            }
+            
+            if(state.equals(TelephonyManager.EXTRA_STATE_OFFHOOK))
+            {
+                 return;
+            }
+            
+            if (state.equals(TelephonyManager.EXTRA_STATE_IDLE))
+            {
+              return;
+            }
+        }
+        catch(Exception e)
+        {
+            //your custom message
+        }
+     
+   }
 		
-			Intent i = new Intent(arg0, AccelService.class);
-			i.putExtra("com.kruztech.smsilencefrags.INCOMING_NUMBER", incomingNumber);
-			arg0.startService(i);
-			Log.d(TAG,"TelReceiver: data passed?");
+			
 	}
-}
 
