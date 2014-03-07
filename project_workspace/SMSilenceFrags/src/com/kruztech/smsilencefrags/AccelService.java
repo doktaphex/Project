@@ -29,24 +29,24 @@ public class AccelService extends Service {
 	static String contactName = null;
 	static String data = null;
 	static String smsMessage = null;
-	private static SensorManager sensorManager;
+	private SensorManager sensorManager;
 	private int currentAcceleration = 0;
 	private int proximityNear = 5;
 	private NotificationManager notificationManager;
-	protected static final Sensor accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-	protected static final Sensor proximity = sensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
-
+		
 	private final SensorEventListener sensorEventListener = new SensorEventListener() {
 		public void onAccuracyChanged(Sensor sensor, int accuracy) { }
 		public void onSensorChanged(SensorEvent event) {
 			Sensor source = event.sensor;
-			if(source.equals(accelerometer)){
+			if(source.equals(sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER))){
 				int z = (int) event.values[2];
 				currentAcceleration = (int) z;
+				Log.d(TAG, "accelservice: gravity");
 			}
-			if(source.equals(proximity)){
+			if(source.equals(sensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY))){
 				int p = (int) event.values[0];
 				proximityNear = (int) p;
+				Log.d(TAG, "accelservice: proximity");
 			}
 			if(currentAcceleration < -8 && proximityNear == 0){
 				notificationSender(null);
@@ -127,8 +127,8 @@ public class AccelService extends Service {
 
 		sensorManager = (SensorManager)getSystemService(Context.SENSOR_SERVICE);
 
-//		Sensor accelerometer =
-//				sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+		Sensor accelerometer =
+				sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
 		sensorManager.registerListener(sensorEventListener,
 				accelerometer,
 				SensorManager.SENSOR_DELAY_FASTEST);
@@ -140,8 +140,8 @@ public class AccelService extends Service {
 
 		sensorManager = (SensorManager)getSystemService(Context.SENSOR_SERVICE);
 
-//		Sensor proximity =
-//				sensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
+		Sensor proximity =
+				sensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
 		sensorManager.registerListener(sensorEventListener,
 				proximity,
 				SensorManager.SENSOR_DELAY_NORMAL);
@@ -153,6 +153,7 @@ public class AccelService extends Service {
 	@Override
 	public void onDestroy(){
 		sensorManager.unregisterListener(sensorEventListener);
+		sensorManager = null;
 		Log.d(TAG, "Service destroyed");
 	}
 }
