@@ -3,8 +3,26 @@
 
     <string name="app_name">YakChat</string>
     <string name="action_settings">Settings</string>
-    <string name="hello_world">Hello world!</string>
-    <string name="drawer_open">Open</string>
-    <string name="drawer_close">Close</string>
 
+    <string-array name="items">
+        <item>Messaging</item>
+        <item>Settings</item>
+    </string-array>
+
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
+
+    <!-- Login strings -->
+
+    <string name="login">Login</string>
+    <string name="uNameHint">User Name</string>
+    <string name="pWordHint">Password</string>
+
+    <!-- Registration strings -->
+
+    <string name="registration">Register</string>
+    <string name="uNameReg">Enter User Name</string>
+    <string name="emailReg">Enter Email Address</string>
+    <string name="pWordReg">Enter Password</string>
+    <string name="pWordVal">Re-type Password</string>
 </resources>
