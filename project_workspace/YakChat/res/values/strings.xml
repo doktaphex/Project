@@ -25,4 +25,5 @@
     <string name="emailReg">Enter Email Address</string>
     <string name="pWordReg">Enter Password</string>
     <string name="pWordVal">Re-type Password</string>
+    
 </resources>
