@@ -3,8 +3,10 @@ package com.kruztech.smsilencefrags;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.app.ProgressDialog;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -34,6 +36,30 @@ public class ManagementFragment extends Fragment {
 		TimeDateBtn = (Button) getView().findViewById(R.id.TimeDateBtn);
 		RespBtn = (Button) getView().findViewById(R.id.RespBtn);
 		//progBar = (ProgressBar) getView().findViewById(R.id.progBar);
+	}
+	
+	public void setTitle(CharSequence title) {
+		MainActivity.mTitle = title;
+		getActivity().getActionBar().setTitle(MainActivity.mTitle);
+	}
+	
+	protected void messages(){
+		 RespBtn.setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(View arg0) {
+				MessageFragment fragment1 = new MessageFragment();
+
+				getFragmentManager().beginTransaction()
+				.replace(R.id.fragment_container, fragment1)
+				.addToBackStack(null)
+				.commit();
+				Log.d(TAG,"Opened about fragment");
+				setTitle("About");				
+			}
+			 
+		 });
+		
 	}
 	
 //	public void launchRingDialog(ManagementFragment managementFragment) {
