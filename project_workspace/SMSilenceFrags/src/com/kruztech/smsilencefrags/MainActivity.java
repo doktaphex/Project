@@ -33,7 +33,7 @@ public class MainActivity extends Activity {
 	private ActionBarDrawerToggle mDrawerToggle;
 
 	private CharSequence mDrawerTitle;
-	private CharSequence mTitle;
+	protected static CharSequence mTitle;
 	private String[] mDrawerItems;
 	private static final String TAG = "Kruztech";
 	@Override
