@@ -1,5 +1,6 @@
 package com.kruztech.smsilencefrags;
 
+import java.lang.reflect.Method;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -19,6 +20,7 @@ import android.net.Uri;
 import android.os.IBinder;
 import android.provider.ContactsContract.PhoneLookup;
 import android.telephony.SmsManager;
+import android.telephony.TelephonyManager;
 //import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.View;
@@ -57,8 +59,19 @@ public class AccelService extends Service {
 					e.printStackTrace();
 					Log.d(TAG, "sms not sent");
 				}
-				//				TelephonyManager telMan = (TelephonyManager) getApplicationContext().getSystemService(Context.TELEPHONY_SERVICE);
-				//				telMan.endCall();
+//								TelephonyManager telMan = (TelephonyManager) getApplicationContext().getSystemService(Context.TELEPHONY_SERVICE);
+//								telMan.endCall();
+				
+//				TelephonyManager tm = (TelephonyManager) context
+//			            .getSystemService(Context.TELEPHONY_SERVICE);
+//			Class c = Class.forName(tm.getClass().getName());
+//			Method m = c.getDeclaredMethod("getITelephony");
+//			m.setAccessible(true);
+//			Object telephonyService = m.invoke(tm); // Get the internal ITelephony object
+//			c = Class.forName(telephonyService.getClass().getName()); // Get its class
+//			m = c.getDeclaredMethod("endCall"); // Get the "endCall()" method
+//			m.setAccessible(true); // Make it accessible
+//			m.invoke(telephonyService); // invoke endCall()
 				onDestroy();
 				Toast.makeText(getApplicationContext(), "You flipped your phone", Toast.LENGTH_SHORT)
 				.show();
