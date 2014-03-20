@@ -5,8 +5,10 @@
     <string name="action_settings">Settings</string>
 
     <string-array name="items">
+        <item>Login</item>
         <item>Messaging</item>
         <item>Settings</item>
+        <item>Registration</item>
     </string-array>
 
     <string name="drawer_open">Open navigation drawer</string>
@@ -25,5 +27,6 @@
     <string name="emailReg">Enter Email Address</string>
     <string name="pWordReg">Enter Password</string>
     <string name="pWordVal">Re-type Password</string>
-    
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 </resources>
