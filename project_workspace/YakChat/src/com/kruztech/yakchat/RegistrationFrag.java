@@ -9,7 +9,9 @@ import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 
 import android.os.Bundle;
+import android.app.ActionBar;
 import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -22,6 +24,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+import android.text.Spannable;
+import android.text.SpannableString;
 import android.util.Log;
 
 
@@ -45,6 +49,10 @@ public class RegistrationFrag extends Fragment {
 	private String pVal;
 	private Button RegBtn;
 	final static String TAG = "Kruztech";
+	
+	public static final String UNAME = "uname";
+	public static final String MyPrefs = "AppPrefs";
+	SharedPreferences prefs;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
@@ -56,7 +64,24 @@ public class RegistrationFrag extends Fragment {
 		super.onStart();
 		initControls();
 		registerCheck();
+		settingsLogic();
 	}
+	
+	protected void settingsLogic(){
+		prefs = getActivity().getSharedPreferences(MyPrefs, Context.MODE_PRIVATE);
+
+		if (prefs.contains(UNAME))
+		{
+			LoginFrag fragL = new LoginFrag();
+			FragmentTransaction transaction = getFragmentManager().beginTransaction();
+			
+			transaction.replace(R.id.content_frame, fragL);
+			transaction.commit();
+		}else{
+			return;
+		}
+		}
+
 	
 	public void launchRingDialog(View view) {
 		final ProgressDialog rpd = new ProgressDialog (getActivity());
@@ -161,6 +186,17 @@ public class RegistrationFrag extends Fragment {
 							Email.setText("");
 							Pword.setText("");
 							Pval.setText("");
+							
+							Editor edit = prefs.edit();
+							edit.putBoolean("uname", true);
+							edit.apply();
+							
+							MessagingFrag fragM = new MessagingFrag();
+							FragmentTransaction transaction = getFragmentManager().beginTransaction();
+							
+							transaction.replace(R.id.content_frame, fragM);
+							transaction.commit();
+							
 						}
 
 					});
