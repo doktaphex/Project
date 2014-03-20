@@ -129,11 +129,46 @@ public class MainActivity extends Activity {
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
         @Override
         public void onItemClick(AdapterView parent, View view, int position, long id) {
-            Toast.makeText(MainActivity.this, ((TextView)view).getText(), Toast.LENGTH_LONG).show();
+        	selectItem(position);
+        	Toast.makeText(MainActivity.this, ((TextView)view).getText(), Toast.LENGTH_LONG).show();
             drawerLayout.closeDrawer(drawerListView);
  
         }
     }
+    
+    public void selectItem(int position) {
+		// update the main content by replacing fragments
+		Log.d(TAG,"switched fragments using nav-drawer");
+		if(position == 0){
+			LoginFrag fragL = new LoginFrag();
+
+			// In case this activity was started with special instructions from an
+			// Intent, pass the Intent's extras to the fragment as arguments
+			fragL.setArguments(getIntent().getExtras());
+
+			// Add the fragment to the 'fragment_container' FrameLayout
+			getFragmentManager().beginTransaction()
+			.replace(R.id.content_frame, fragL)
+			.commit();
+		}
+		if(position == 3){
+			RegistrationFrag fragR = new RegistrationFrag();
+
+			// In case this activity was started with special instructions from an
+			// Intent, pass the Intent's extras to the fragment as arguments
+			fragR.setArguments(getIntent().getExtras());
+
+			// Add the fragment to the 'fragment_container' FrameLayout
+			getFragmentManager().beginTransaction()
+			.replace(R.id.content_frame, fragR)
+			.commit();
+		}
+
+		// update selected item and title, then close the drawer
+		drawerListView.setItemChecked(position, true);
+		setTitle(drawerListViewItems[position]);
+		drawerLayout.closeDrawer(drawerListView);
+	}
     
     /**
 	 * Fragment that appears in the "content_frame", shows a planet
