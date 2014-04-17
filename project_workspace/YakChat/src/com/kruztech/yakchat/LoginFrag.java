@@ -1,12 +1,27 @@
 package com.kruztech.yakchat;
 
-import android.app.Activity;
-import android.net.Uri;
+import java.util.Map;
+
+import com.firebase.client.DataSnapshot;
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
+
+import android.app.FragmentTransaction;
+import android.app.ProgressDialog;
+import android.location.Location;
+import android.location.LocationListener;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.EditText;
 
 /**
  * A simple {@link android.support.v4.app.Fragment} subclass. Activities that
@@ -16,49 +31,21 @@ import android.view.ViewGroup;
  * create an instance of this fragment.
  * 
  */
-public class LoginFrag extends Fragment {
-	// TODO: Rename parameter arguments, choose names that match
-	// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-	private static final String ARG_PARAM1 = "param1";
-	private static final String ARG_PARAM2 = "param2";
+public class LoginFrag extends Fragment implements LocationListener{
+	private EditText Uname;
+	private String uName;
+	private EditText Pword;
+	private String pWord;
+	private Button LogBtn;
+	private String UserName;
+	final static String TAG = "Kruztech: YakChat";
 
-	// TODO: Rename and change types of parameters
-	private String mParam1;
-	private String mParam2;
-
-	private OnFragmentInteractionListener mListener;
-
-	/**
-	 * Use this factory method to create a new instance of this fragment using
-	 * the provided parameters.
-	 * 
-	 * @param param1
-	 *            Parameter 1.
-	 * @param param2
-	 *            Parameter 2.
-	 * @return A new instance of fragment LoginFrag.
-	 */
-	// TODO: Rename and change types and number of parameters
-	public static LoginFrag newInstance(String param1, String param2) {
-		LoginFrag fragment = new LoginFrag();
-		Bundle args = new Bundle();
-		args.putString(ARG_PARAM1, param1);
-		args.putString(ARG_PARAM2, param2);
-		fragment.setArguments(args);
-		return fragment;
-	}
+	public static final String MyPrefs = "AppPrefs";
+	SharedPreferences prefs;
+	Firebase userRef;
 
 	public LoginFrag() {
 		// Required empty public constructor
-	}
-
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		if (getArguments() != null) {
-			mParam1 = getArguments().getString(ARG_PARAM1);
-			mParam2 = getArguments().getString(ARG_PARAM2);
-		}
 	}
 
 	@Override
@@ -68,42 +55,144 @@ public class LoginFrag extends Fragment {
 		return inflater.inflate(R.layout.fragment_login, container, false);
 	}
 
-	// TODO: Rename method, update argument and hook method into UI event
-	public void onButtonPressed(Uri uri) {
-		if (mListener != null) {
-			mListener.onFragmentInteraction(uri);
-		}
-	}
-
-//	@Override
-//	public void onAttach(Activity activity) {
-//		super.onAttach(activity);
-//		try {
-//			mListener = (OnFragmentInteractionListener) activity;
-//		} catch (ClassCastException e) {
-//			throw new ClassCastException(activity.toString()
-//					+ " must implement OnFragmentInteractionListener");
-//		}
-//	}
-
 	@Override
-	public void onDetach() {
-		super.onDetach();
-		mListener = null;
+	public void onStart(){
+		super.onStart();
+		initControls();
+		getUserName();
+		getPassWord();
+		setCredentials();
+		userCheck();
 	}
 
-	/**
-	 * This interface must be implemented by activities that contain this
-	 * fragment to allow an interaction in this fragment to be communicated to
-	 * the activity and potentially other fragments contained in that activity.
-	 * <p>
-	 * See the Android Training lesson <a href=
-	 * "http://developer.android.com/training/basics/fragments/communicating.html"
-	 * >Communicating with Other Fragments</a> for more information.
-	 */
-	public interface OnFragmentInteractionListener {
-		// TODO: Update argument type and name
-		public void onFragmentInteraction(Uri uri);
+	protected String getUserName(){
+		prefs = getActivity().getSharedPreferences(MyPrefs, Context.MODE_PRIVATE);
+
+		if (prefs.contains("username")){
+			uName = prefs.getString("username", "");
+		}return uName;
 	}
+
+	protected String getPassWord(){
+		prefs = getActivity().getSharedPreferences(MyPrefs, Context.MODE_PRIVATE);
+
+		if (prefs.contains("password")){
+			pWord = prefs.getString("password", "");	
+		}return pWord;
+	}
+
+	public void setCredentials(){
+		Uname.setText(uName);
+		UserName = uName;
+		Log.d(TAG, "output: " + uName);
+		Pword.setText(pWord);
+		Log.d(TAG, "output: " + pWord);
+	}
+
+
+	public void launchRingDialog(View view) {
+		final ProgressDialog rpd = new ProgressDialog (getActivity());
+		rpd.setTitle("Please Wait!");
+		rpd.setMessage("Attempting to login");
+		rpd.setIcon(R.drawable.ic_launcher);
+		rpd.setCancelable(false);
+		rpd.show();
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				try {
+					//writeFireBaseData();
+					Thread.sleep(3000);
+				} catch (Exception e) {
+
+				}
+				rpd.dismiss();
+			}
+		}).start();
+	}
+
+	public void initControls(){
+		Uname = (EditText) getView().findViewById(R.id.uName);
+		Pword = (EditText) getView().findViewById(R.id.pWord);
+		LogBtn = (Button) getView().findViewById(R.id.loginBtn);
+	}
+	
+
+	public void userCheck(){
+		LogBtn.setOnClickListener(new OnClickListener(){
+
+			
+			public void onClick(View v) {
+					
+				launchRingDialog(v);
+				
+				final Firebase userRef = new Firebase("https://radiant-fire-6008.firebaseio.com/users/" + UserName);
+					userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+					     @Override
+					     public void onDataChange(DataSnapshot snapshot) {
+					         Object value = snapshot.getValue();
+					         if (value == null) {
+					             System.out.println("User " + uName + " doesn't exist");
+					         } else {
+					             String PWORD = (String)((Map)value).get("PassWord");
+					             String UNAME = (String)((Map)value).get("UserName");
+					             if(PWORD.equals(pWord) && UNAME.equals(uName)){
+					            	 Log.d(TAG, "u: " + UNAME + " p: " + PWORD);
+					            	 userRef.child("LoggedIn").setValue(true, new Firebase.CompletionListener(){
+
+										@Override
+										public void onComplete(
+												FirebaseError arg0,
+												Firebase arg1) {
+											MessagingFrag fragM = new MessagingFrag();
+											FragmentTransaction transaction = getFragmentManager().beginTransaction();
+											
+											transaction.replace(R.id.content_frame, fragM);
+											transaction.commit();
+											
+										}
+					            		 
+					            	 });
+					             }
+					             System.out.println("User " + uName + " password is: " + PWORD);
+					             
+					         }
+					     }
+
+
+						@Override
+						public void onCancelled(FirebaseError arg0) {
+							// TODO Auto-generated method stub
+							
+						}
+					 });
+				}
+			});
 
 }
+
+	@Override
+	public void onLocationChanged(Location location) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onStatusChanged(String provider, int status, Bundle extras) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onProviderEnabled(String provider) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onProviderDisabled(String provider) {
+		// TODO Auto-generated method stub
+		
+	}
+}
+

@@ -5,14 +5,12 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.res.Configuration;
-import android.graphics.Typeface;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,7 +28,7 @@ public class MainActivity extends Activity {
     private DrawerLayout drawerLayout;
     private ListView drawerListView;
     private ActionBarDrawerToggle actionBarDrawerToggle;
-    private static final String TAG = "Kruztech";
+    private static final String TAG = "Kruztech: YakChat";
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +36,7 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         
         SpannableString s = new SpannableString("YakChat");
-        s.setSpan(new TypefaceSpan(this, "tiptoe.ttf"), 0, s.length(),
+        s.setSpan(new TypefaceSpan(this, "tiptoe.ttf", 2, 7, 7, 0xff990000), 0, s.length(),
                 Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         // Update the action bar title with the TypefaceSpan instance
         ActionBar actionBar = getActionBar();
@@ -166,7 +164,7 @@ public class MainActivity extends Activity {
 
 		// update selected item and title, then close the drawer
 		drawerListView.setItemChecked(position, true);
-		setTitle(drawerListViewItems[position]);
+		//setTitle(drawerListViewItems[position]);
 		drawerLayout.closeDrawer(drawerListView);
 	}
     

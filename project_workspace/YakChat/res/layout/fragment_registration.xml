@@ -11,12 +11,29 @@
 
     <!-- TODO: Update blank fragment layout -->
 
+    <com.kruztech.yakchat.CustomTextView
+        android:id="@+id/subTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="5dp"
+        android:background="@drawable/rounded_edittext"
+        android:gravity="center"
+        android:text="@string/registration"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="#fff"
+        android:shadowDx = "5"
+        android:shadowDy = "5"
+        android:shadowColor="#008080"
+        android:shadowRadius="1"
+        android:textSize="25sp" />
+
     <EditText
         android:id="@+id/uNameReg"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/uNameReg"
-        android:maxLength="15" >
+        android:singleLine="true"
+        android:paddingTop="20dp" >
 
         <requestFocus />
     </EditText>
@@ -33,22 +50,20 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/pWordReg"
-        android:inputType="textPassword"
-        android:maxLength="15" />
-    
+        android:inputType="textPassword" />
+
     <EditText
         android:id="@+id/pWordVal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/pWordVal"
-        android:inputType="textPassword"
-        android:maxLength="15" />
+        android:inputType="textPassword" />
 
     <Button
         android:id="@+id/regBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="@string/registration" />
+        android:text="@string/regBtn" />
 
 </LinearLayout>

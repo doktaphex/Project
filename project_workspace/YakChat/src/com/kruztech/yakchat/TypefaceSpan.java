@@ -29,6 +29,12 @@ import android.util.LruCache;
  * @author Tristan Waddington
  */
 public class TypefaceSpan extends MetricAffectingSpan {
+	
+	private int radius;
+    private int dx;
+    private int dy;
+    private int color;
+	
       /** An <code>LruCache</code> for previously loaded typefaces. */
     private static LruCache<String, Typeface> sTypefaceCache =
             new LruCache<String, Typeface>(12);
@@ -38,8 +44,14 @@ public class TypefaceSpan extends MetricAffectingSpan {
     /**
      * Load the {@link Typeface} and apply to a {@link Spannable}.
      */
-    public TypefaceSpan(Context context, String typefaceName) {
-        mTypeface = sTypefaceCache.get(typefaceName);
+    public TypefaceSpan(Context context, String typefaceName, int radius, int dx, int dy, int color) {
+        
+    	this.radius = radius;
+        this.dx = dx;
+        this.dy = dy;
+        this.color = color;
+    	
+    	mTypeface = sTypefaceCache.get(typefaceName);
 
         if (mTypeface == null) {
             mTypeface = Typeface.createFromAsset(context.getApplicationContext()
@@ -61,7 +73,7 @@ public class TypefaceSpan extends MetricAffectingSpan {
     @Override
     public void updateDrawState(TextPaint tp) {
         tp.setTypeface(mTypeface);
-        
+        tp.setShadowLayer(radius, dx, dy, color);
         // Note: This flag is required for proper typeface rendering
         tp.setFlags(tp.getFlags() | Paint.SUBPIXEL_TEXT_FLAG);
     }

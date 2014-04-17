@@ -11,11 +11,29 @@
 
     <!-- TODO: Update blank fragment layout -->
 
-    <EditText
-        android:id="@+id/uName"
+    <com.kruztech.yakchat.CustomTextView
+        android:id="@+id/subTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-android:hint="@string/uNameHint" >
+        android:paddingBottom="5dp"
+        android:background="@drawable/rounded_edittext"
+        android:gravity="center"
+        android:shadowColor="#008080"
+        android:shadowDx="5"
+        android:shadowDy="5"
+        android:shadowRadius="1"
+        android:text="@string/login"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="#fff"
+        android:textSize="25sp" />
+
+    <EditText
+        android:id="@+id/uName"
+        android:paddingTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/uNameHint" >
+
         <requestFocus />
     </EditText>
 
@@ -23,14 +41,14 @@ android:hint="@string/uNameHint" >
         android:id="@+id/pWord"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="textPassword" 
-        android:hint="@string/pWordHint"/>
+        android:hint="@string/pWordHint"
+        android:inputType="textPassword" />
 
     <Button
         android:id="@+id/loginBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="@string/login" />
+        android:text="@string/logBtn" />
 
 </LinearLayout>

@@ -2,19 +2,18 @@ package com.kruztech.yakchat;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
-
 import android.os.Bundle;
-import android.app.ActionBar;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.view.LayoutInflater;
@@ -24,8 +23,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-import android.text.Spannable;
-import android.text.SpannableString;
 import android.util.Log;
 
 
@@ -48,10 +45,17 @@ public class RegistrationFrag extends Fragment {
 	private EditText Pval;
 	private String pVal;
 	private Button RegBtn;
-	final static String TAG = "Kruztech";
-	
+	final static String TAG = "Kruztech: YakChat";
+	private static String emailPattern;
+	private static String email;
+	private Pattern pattern;
+	private Matcher matcher;
 	public static final String UNAME = "uname";
 	public static final String MyPrefs = "AppPrefs";
+	private static boolean unameValid = false;
+	private static boolean emailValid = false;
+	private static boolean pwordValid = false;
+	private static boolean pvalValid = false;
 	SharedPreferences prefs;
 
 	@Override
@@ -65,8 +69,9 @@ public class RegistrationFrag extends Fragment {
 		initControls();
 		registerCheck();
 		settingsLogic();
+
 	}
-	
+
 	protected void settingsLogic(){
 		prefs = getActivity().getSharedPreferences(MyPrefs, Context.MODE_PRIVATE);
 
@@ -74,16 +79,16 @@ public class RegistrationFrag extends Fragment {
 		{
 			LoginFrag fragL = new LoginFrag();
 			FragmentTransaction transaction = getFragmentManager().beginTransaction();
-			
+
 			transaction.replace(R.id.content_frame, fragL);
 			transaction.commit();
 		}else{
 			return;
 		}
-		}
+	}
 
-	
-	public void launchRingDialog(View view) {
+
+	public void launchRingDialog() {
 		final ProgressDialog rpd = new ProgressDialog (getActivity());
 		rpd.setTitle("Please Wait!");
 		rpd.setMessage("Creating New User");
@@ -95,7 +100,7 @@ public class RegistrationFrag extends Fragment {
 			public void run() {
 				try {
 					writeFireBaseData();
-					Thread.sleep(5000);
+					Thread.sleep(3000);
 				} catch (Exception e) {
 
 				}
@@ -122,24 +127,113 @@ public class RegistrationFrag extends Fragment {
 
 			@Override
 			public void onClick(View v) {
-				if(Uname != null && Email != null && Pword != null && Pval != null){
-					if(Pword.getText().toString().matches(Pval.getText().toString())){
-						uName = Uname.getText().toString();
-						UserName = uName;
-						Log.d(TAG, "uname is: " + uName);
-						eMail = Email.getText().toString();
-						Log.d(TAG, "email is: " + eMail);
-						pWord = Pword.getText().toString();
-						Log.d(TAG, "pword is: " + pWord);
-						launchRingDialog(v);
-					}else{
-						Toast passVal = Toast.makeText(getActivity().getApplicationContext(), "Passwords entered do not match! Please re-enter password", Toast.LENGTH_SHORT);
-						passVal.show();
-					}
-				}
+				unameValidation();
+				emailValidation();
+				pwordValidation();
+				pvalValidation();
 
 			}
 		});
+	}
+
+	public boolean unameValidation(){
+		unameValid = false;
+
+		if(Uname == null) {
+			Log.d(TAG, "uname blank");
+			Uname.setError("Username must be 6 characters or more! Please try again.");
+			Uname.requestFocus();
+
+		}
+		else if(Uname.getText().toString().length() <= 5){
+			Log.d(TAG, "uname too short");
+			Uname.setError("Username must be 6 characters or more! Please try again.");
+			Uname.requestFocus();
+
+		}
+		else if(Uname.getText().toString().length() > 16){
+			Log.d(TAG, "uname too long");
+			Uname.setError("Username limited to 16 characters! Please try again.");
+			Uname.requestFocus();
+
+		}else {
+			unameValid = true;
+			Uname.setError(null);
+			Log.d(TAG, "uname valid");
+		}
+		return unameValid;
+	}
+
+	public boolean emailValidation() {
+		emailValid = false;
+		email = Email.getText().toString();
+		emailPattern = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+				+ "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+
+		pattern = Pattern.compile(emailPattern);
+		matcher = pattern.matcher(email);
+		if(Email == null) {
+			Email.setError("Please enter a valid email address!");
+			Email.requestFocus();
+			Log.d(TAG, "email blank");
+		}
+		else if(!matcher.find()) {
+			Email.setError("Please enter a valid email address!");
+			Email.requestFocus();
+			Log.d(TAG, "email non-conform");
+		}else {
+			emailValid = true;
+			Email.setError(null);
+			Log.d(TAG, "email conform");
+		}
+		return emailValid;
+	}
+
+	public boolean pwordValidation() {
+		pwordValid = false;
+		if(Pword == null) {
+			Pword.setError("Password must be 6 characters or more! Please try again.");
+			Pword.requestFocus();
+			Log.d(TAG, "pword blank");
+		}
+		else if(Pword.getText().toString().length() <= 5){
+			Pword.setError("Password must be 6 characters or more! Please try again.");
+			Pword.requestFocus();
+			Log.d(TAG, "pword too short");
+		}
+		else if(Pword.getText().toString().length() > 16){
+			Pword.setError("Password limited to 16 characters! Please try again.");
+			Pword.requestFocus();
+			Log.d(TAG, "pword too long");
+		}else{
+			pwordValid = true;
+			Pword.setError(null);
+		}
+		return pwordValid;
+	}
+
+	public boolean pvalValidation() {
+		pvalValid = false;
+		pWord = Pword.getText().toString();
+		pVal = Pval.getText().toString();
+
+		if(pVal.equals("")) {
+			Pval.setError("Password must be 6 characters or more! Please try again.");
+			Pval.requestFocus();
+			Log.d(TAG, "pval blank");
+		}else if(pVal.equals(pWord)) {
+			pvalValid = true;
+
+			Pval.setError(null);
+
+			uName = Uname.getText().toString();
+			UserName = uName;
+			eMail = Email.getText().toString();
+			pWord = Pword.getText().toString();
+			launchRingDialog();
+
+		}
+		return pvalValid;
 	}
 
 	public void writeFireBaseData(){
@@ -186,17 +280,19 @@ public class RegistrationFrag extends Fragment {
 							Email.setText("");
 							Pword.setText("");
 							Pval.setText("");
-							
+
 							Editor edit = prefs.edit();
 							edit.putBoolean("uname", true);
+							edit.putString("username", uName);
+							edit.putString("password", pWord);
 							edit.apply();
-							
-							MessagingFrag fragM = new MessagingFrag();
+
+							LoginFrag fragL = new LoginFrag();
 							FragmentTransaction transaction = getFragmentManager().beginTransaction();
-							
-							transaction.replace(R.id.content_frame, fragM);
+
+							transaction.replace(R.id.content_frame, fragL);
 							transaction.commit();
-							
+
 						}
 
 					});
