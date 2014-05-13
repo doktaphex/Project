@@ -43,7 +43,7 @@ public class ManagementFragment extends Fragment {
 		getActivity().getActionBar().setTitle(MainActivity.mTitle);
 	}
 	
-	protected void messages(){
+	/*protected void messages(){
 		 RespBtn.setOnClickListener(new OnClickListener(){
 
 			@Override
@@ -58,7 +58,7 @@ public class ManagementFragment extends Fragment {
 				setTitle("About");				
 			}
 			 
-		 });
+		 });*/
 		
 	}
 	
@@ -82,4 +82,4 @@ public class ManagementFragment extends Fragment {
 //		lp.dimAmount=0.7f;
 //		progDialog.getWindow().setAttributes(lp);
 //	}
-}
+
