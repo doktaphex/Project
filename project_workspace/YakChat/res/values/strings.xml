@@ -33,11 +33,12 @@
     <string name="pWordReg">Enter Password</string>
     <string name="pWordVal">Re-type Password</string>
     <string name="registration">Please Register</string>
-    
+
     <!-- Messaging strings -->
-    
+
     <string name="message">Messages</string>
     <string name="logout">Logout</string>
     <string name="send">Send</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

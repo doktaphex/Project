@@ -1,9 +1,21 @@
 package com.kruztech.yakchat;
 
+//import java.io.IOException;
+//import java.util.concurrent.ExecutorService;
+//import java.util.concurrent.Executors;
+//import java.util.concurrent.ScheduledExecutorService;
+//import java.util.concurrent.ScheduledFuture;
+//import java.util.concurrent.TimeUnit;
+
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.Context;
 import android.content.res.Configuration;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
@@ -21,14 +33,20 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.util.Log;
  
-public class MainActivity extends Activity {
+public class MainActivity extends Activity{
  
     public static CharSequence mTitle;
 	private String[] drawerListViewItems;
     private DrawerLayout drawerLayout;
     private ListView drawerListView;
     private ActionBarDrawerToggle actionBarDrawerToggle;
+    LocationManager locationManager;
+	LocationListener loc_listener;
+	public double lat;
+	public double lon;
     private static final String TAG = "Kruztech: YakChat";
+    //private ScheduledFuture<?> future;
+	//private ScheduledExecutorService scheduleTaskExecutor;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,6 +109,8 @@ public class MainActivity extends Activity {
         drawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
  
         drawerListView.setOnItemClickListener(new DrawerItemClickListener());
+        
+        
     }
  
     @Override
@@ -118,6 +138,36 @@ public class MainActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
  
+    public void onPause(){
+    	super.onPause();
+    	locationManager.removeUpdates(loc_listener);
+    	//((ExecutorService) future).shutdown();
+    }
+    
+    public void onDestroy(){
+    	super.onDestroy();
+    	locationManager.removeUpdates(loc_listener);
+    	
+    	//((ExecutorService) future).shutdown();
+    }
+    
+    public void onResume(){
+    	super.onResume();
+    	getLocation();
+    	
+//    	scheduleTaskExecutor = Executors.newSingleThreadScheduledExecutor();
+//
+//        // This schedule a task to run every 10 seconds:
+//
+//        Runnable runnable = new Runnable() {
+//          public void run() {
+//        	  Log.d(TAG, "task executing.");
+//                getLocation();
+//          }
+//        };
+//        future = scheduleTaskExecutor.scheduleAtFixedRate(runnable, 0, 10, TimeUnit.SECONDS);
+    }
+    
     @Override
 	public void setTitle(CharSequence title) {
 		mTitle = title;
@@ -166,6 +216,38 @@ public class MainActivity extends Activity {
 		drawerListView.setItemChecked(position, true);
 		//setTitle(drawerListViewItems[position]);
 		drawerLayout.closeDrawer(drawerListView);
+	}
+    
+    public void getLocation() {
+		// Get the location manager
+		locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+		Criteria criteria = new Criteria();
+		criteria.setHorizontalAccuracy(Criteria.ACCURACY_HIGH);
+		criteria.setVerticalAccuracy(Criteria.ACCURACY_MEDIUM);
+		criteria.setBearingAccuracy(Criteria.ACCURACY_LOW);
+		criteria.setSpeedAccuracy(Criteria.ACCURACY_LOW);
+		String bestProvider = locationManager.getBestProvider(criteria, false);
+		Location location = locationManager.getLastKnownLocation(bestProvider);
+		loc_listener = new LocationListener() {
+
+			public void onLocationChanged(Location l) {}
+
+			public void onProviderEnabled(String p) {}
+
+			public void onProviderDisabled(String p) {}
+
+			public void onStatusChanged(String p, int status, Bundle extras) {}
+		};
+		locationManager.requestLocationUpdates(bestProvider, 0, 0, loc_listener);
+		try {
+			lat = location.getLatitude();
+			lon = location.getLongitude();
+		} catch (NullPointerException e) {
+			Log.d(TAG, "Error" + e);
+
+			lat = -1.0;
+			lon = -1.0;
+		}
 	}
     
     /**

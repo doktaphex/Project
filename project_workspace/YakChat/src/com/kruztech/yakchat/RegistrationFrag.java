@@ -22,7 +22,10 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 
 
@@ -52,10 +55,10 @@ public class RegistrationFrag extends Fragment {
 	private Matcher matcher;
 	public static final String UNAME = "uname";
 	public static final String MyPrefs = "AppPrefs";
-	private static boolean unameValid = false;
-	private static boolean emailValid = false;
-	private static boolean pwordValid = false;
-	private static boolean pvalValid = false;
+	private  int unameValid = 0;
+	private  int emailValid = 0;
+	private  int pwordValid = 0;
+	private  int pvalValid = 0;
 	SharedPreferences prefs;
 
 	@Override
@@ -89,6 +92,7 @@ public class RegistrationFrag extends Fragment {
 
 
 	public void launchRingDialog() {
+
 		final ProgressDialog rpd = new ProgressDialog (getActivity());
 		rpd.setTitle("Please Wait!");
 		rpd.setMessage("Creating New User");
@@ -96,6 +100,7 @@ public class RegistrationFrag extends Fragment {
 		rpd.setCancelable(false);
 		rpd.show();
 		new Thread(new Runnable() {
+
 			@Override
 			public void run() {
 				try {
@@ -131,109 +136,122 @@ public class RegistrationFrag extends Fragment {
 				emailValidation();
 				pwordValidation();
 				pvalValidation();
-
+				if(unameValid == 1 && emailValid == 1 && pwordValid == 1 && pvalValid == 1)
+				{
+					fullValidation();
+				}
 			}
 		});
 	}
 
-	public boolean unameValidation(){
-		unameValid = false;
-
+	public void unameValidation(){
+		//		unameValid = false;
 		if(Uname == null) {
 			Log.d(TAG, "uname blank");
 			Uname.setError("Username must be 6 characters or more! Please try again.");
 			Uname.requestFocus();
+			unameValid = 0;
 
 		}
 		else if(Uname.getText().toString().length() <= 5){
 			Log.d(TAG, "uname too short");
 			Uname.setError("Username must be 6 characters or more! Please try again.");
 			Uname.requestFocus();
+			unameValid = 0;
 
 		}
 		else if(Uname.getText().toString().length() > 16){
 			Log.d(TAG, "uname too long");
 			Uname.setError("Username limited to 16 characters! Please try again.");
 			Uname.requestFocus();
+			unameValid = 0;
 
 		}else {
-			unameValid = true;
+			uName = Uname.getText().toString();
+			UserName = uName;
+			unameValid = 1;
 			Uname.setError(null);
 			Log.d(TAG, "uname valid");
 		}
-		return unameValid;
-	}
-
-	public boolean emailValidation() {
-		emailValid = false;
-		email = Email.getText().toString();
-		emailPattern = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
-				+ "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
-
-		pattern = Pattern.compile(emailPattern);
-		matcher = pattern.matcher(email);
-		if(Email == null) {
-			Email.setError("Please enter a valid email address!");
-			Email.requestFocus();
-			Log.d(TAG, "email blank");
+		
 		}
-		else if(!matcher.find()) {
-			Email.setError("Please enter a valid email address!");
-			Email.requestFocus();
-			Log.d(TAG, "email non-conform");
-		}else {
-			emailValid = true;
-			Email.setError(null);
-			Log.d(TAG, "email conform");
-		}
-		return emailValid;
-	}
 
-	public boolean pwordValidation() {
-		pwordValid = false;
+	public void emailValidation() {
+		  //  emailValid = false;
+		  email = Email.getText().toString().trim();
+		  emailPattern = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+		    + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+
+		  pattern = Pattern.compile(emailPattern);
+		  matcher = pattern.matcher(email);
+		//  
+		  
+		  if(email.equals("")) {
+		   Email.setError("Please enter a valid email address!");
+		   Email.requestFocus();
+		   emailValid = 0;
+		   Log.d(TAG, "email blank");
+		  }
+//		  else if(!matcher.find()) {
+//		   Email.setError("Please enter a valid email address!");
+//		   Email.requestFocus();
+//		   emailValid = 0;
+//		   Log.d(TAG, "email non-conform" + "email = " + email + "emailValid = " + emailValid);
+//		  }
+		  else if(matcher.find()) {
+		   eMail = Email.getText().toString();
+		   emailValid = 1;
+		   Email.setError(null);
+		   Log.d(TAG, "email conform" + "email = " + email + "emailValid = " + emailValid);
+		  }
+		 }
+
+	public void pwordValidation() {
+		//		pwordValid = false;
 		if(Pword == null) {
 			Pword.setError("Password must be 6 characters or more! Please try again.");
 			Pword.requestFocus();
+			pwordValid = 0;
 			Log.d(TAG, "pword blank");
 		}
 		else if(Pword.getText().toString().length() <= 5){
 			Pword.setError("Password must be 6 characters or more! Please try again.");
 			Pword.requestFocus();
+			pwordValid = 0;
 			Log.d(TAG, "pword too short");
 		}
 		else if(Pword.getText().toString().length() > 16){
 			Pword.setError("Password limited to 16 characters! Please try again.");
 			Pword.requestFocus();
+			pwordValid = 0;
 			Log.d(TAG, "pword too long");
 		}else{
-			pwordValid = true;
+			pwordValid = 1;
 			Pword.setError(null);
 		}
-		return pwordValid;
 	}
 
-	public boolean pvalValidation() {
-		pvalValid = false;
+	public void pvalValidation() {
+		//		pvalValid = false;
 		pWord = Pword.getText().toString();
 		pVal = Pval.getText().toString();
 
 		if(pVal.equals("")) {
 			Pval.setError("Password must be 6 characters or more! Please try again.");
 			Pval.requestFocus();
+			pvalValid = 0;
 			Log.d(TAG, "pval blank");
-		}else if(pVal.equals(pWord)) {
-			pvalValid = true;
-
-			Pval.setError(null);
-
-			uName = Uname.getText().toString();
-			UserName = uName;
-			eMail = Email.getText().toString();
-			pWord = Pword.getText().toString();
-			launchRingDialog();
-
 		}
-		return pvalValid;
+		else if(pVal.equals(pWord)) {
+			pWord = Pword.getText().toString();
+			pvalValid = 1;
+			Log.d(TAG, "pval = " + pVal + "; pvalValid = " + pvalValid);
+			Pval.setError(null);
+		}
+	}
+
+	public void fullValidation() {
+		launchRingDialog();
 	}
 
 	public void writeFireBaseData(){

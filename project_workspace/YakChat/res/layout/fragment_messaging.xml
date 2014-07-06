@@ -76,28 +76,16 @@
         android:padding="5dp"
         android:src="@drawable/ic_action_send_now" />
 
-    <ScrollView
-        android:id="@+id/scrollView1"
+    <ListView
+        android:id="@+id/list"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_above="@+id/message"
         android:layout_alignLeft="@+id/message"
-        android:layout_below="@+id/subTitle" >
+        android:layout_below="@+id/subTitle"
+        android:stackFromBottom="true"
+        android:transcriptMode="normal" >
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:orientation="vertical" >
-
-            <com.kruztech.yakchat.CustomTextView
-                android:id="@+id/message1"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:layout_marginTop="10dp"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
-        </LinearLayout>
-    </ScrollView>
+    </ListView>
 
 </RelativeLayout>
